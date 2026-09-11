@@ -1,0 +1,113 @@
+{
+ "clusters": [
+  {
+   "cluster": "NGC104",
+   "vsig_lit": 0.51,
+   "vsig_lit_err": 0.01,
+   "method": "PM",
+   "source": "Bianchini et al. 2018"
+  },
+  {
+   "cluster": "NGC5139",
+   "vsig_lit": 0.35,
+   "vsig_lit_err": 0.02,
+   "method": "PM",
+   "source": "Bianchini et al. 2018"
+  },
+  {
+   "cluster": "NGC5904",
+   "vsig_lit": 0.51,
+   "vsig_lit_err": 0.05,
+   "method": "PM",
+   "source": "Bianchini et al. 2018"
+  },
+  {
+   "cluster": "NGC6656",
+   "vsig_lit": 0.29,
+   "vsig_lit_err": 0.03,
+   "method": "PM",
+   "source": "Bianchini et al. 2018"
+  },
+  {
+   "cluster": "NGC7078",
+   "vsig_lit": 0.42,
+   "vsig_lit_err": 0.04,
+   "method": "PM",
+   "source": "Bianchini et al. 2018"
+  },
+  {
+   "cluster": "NGC7089",
+   "vsig_lit": 0.38,
+   "vsig_lit_err": 0.01,
+   "method": "PM",
+   "source": "Bianchini et al. 2018"
+  },
+  {
+   "cluster": "NGC6273",
+   "vsig_lit": 0.29,
+   "vsig_lit_err": 0.04,
+   "method": "PM",
+   "source": "Bianchini et al. 2018"
+  },
+  {
+   "cluster": "NGC5272",
+   "vsig_lit": 0.26,
+   "vsig_lit_err": 0.02,
+   "method": "PM",
+   "source": "Bianchini et al. 2018"
+  },
+  {
+   "cluster": "NGC6752",
+   "vsig_lit": 0.08,
+   "vsig_lit_err": 0.01,
+   "method": "PM",
+   "source": "Bianchini et al. 2018"
+  },
+  {
+   "cluster": "NGC6809",
+   "vsig_lit": 0.29,
+   "vsig_lit_err": 0.09,
+   "method": "PM",
+   "source": "Bianchini et al. 2018"
+  }
+ ],
+ "claims": [
+  {
+   "parameter": "Relaxation time / cluster size",
+   "claim": "Rotation is stronger in clusters with longer relaxation times \u2014 primordial spin survives where two-body relaxation is slow (trend, no coefficient quoted).",
+   "source": "Bianchini et al. 2018; Kamann et al. 2018; Sollima et al. 2019 (weak, <3sigma)",
+   "ours": "CONFIRMED and sharpened: V/sigma vs half-light radius rho=+0.71 (p=0.004) in our reliable subset \u2014 size and relaxation time go hand in hand."
+  },
+  {
+   "parameter": "Mass / luminosity",
+   "claim": "More massive (brighter, higher-dispersion) clusters rotate more strongly.",
+   "source": "Bianchini et al. 2018; Fabricius et al. 2014; Bellazzini et al. 2012",
+   "ours": "Consistent direction: V/sigma vs log N members rho=+0.45 (p=0.038, full sample)."
+  },
+  {
+   "parameter": "Metallicity [Fe/H]",
+   "claim": "Metal-rich clusters rotate faster (significant but secondary correlation, ~25 GCs, LOS velocities).",
+   "source": "Bellazzini et al. 2012 (also Kacharov et al. 2014)",
+   "ours": "NOT confirmed: rho = 0.0 in our PM-based sample of 22 measurable clusters \u2014 an interesting disagreement worth discussing."
+  },
+  {
+   "parameter": "Ellipticity (flattening)",
+   "claim": "Disputed in the literature: Fabricius et al. 2014 and Kamann et al. 2018 report rotating clusters are more flattened; Sollima et al. 2019 and Bellazzini et al. 2012 find no link.",
+   "source": "Fabricius 2014 vs Sollima 2019",
+   "ours": "Not measured \u2014 our target list has no ellipticity column (future work)."
+  },
+  {
+   "parameter": "Tidal destruction rate",
+   "claim": "Clusters being destroyed fastest by Galactic tides have lost the most angular momentum (anticorrelation, <3sigma).",
+   "source": "Sollima, Baumgardt & Hilker 2019",
+   "ours": "Not measured directly, but motivates our tidal-stripping side study."
+  },
+  {
+   "parameter": "Rotation amplitude scale",
+   "claim": "Maximum PM rotation signals range from ~0.5 km/s up to ~6 km/s for NGC 104 and NGC 5139.",
+   "source": "Bianchini et al. 2018",
+   "ours": "MATCHED almost exactly: our V_peak = 6.15 km/s (NGC 104) and 6.09 km/s (NGC 5139)."
+  }
+ ],
+ "note": "Published V/sigma from Bianchini et al. 2018 Table 1 (Gaia DR2 PMs). Differences in absolute V/sigma partly reflect different definitions of V and sigma; rank order is the fairer comparison."
+}

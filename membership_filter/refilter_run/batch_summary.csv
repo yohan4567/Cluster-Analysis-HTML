@@ -1,0 +1,3 @@
+cluster,common_name,strategy,raw_stars,filtered_stars,members,member_fraction,filtered_csv
+Pal 5,,sparse,1513,1083,300,0.2770083102493075,refilter_run\Pal_5_filtered.csv
+NGC 6544,,crowded,92248,88258,6664,0.07550590314759002,refilter_run\NGC_6544_filtered.csv

@@ -1,0 +1,317 @@
+"ltr" dir="ltr" lang="en-GB">
+
+Archive down for maintenance
+"X-UA-Compatible" content="IE=edge" />
+
+"UTF-8" />
+
+Archive down for maintenance
+"initial-scale=1.0, width=device-width" name="viewport" />
+
+"Cache-Control" content="no-cache, no-store, must-revalidate">
+
+"Pragma" content="no-cache">
+
+"Expires" content="0">
+
+"refresh" content="60" /> -->
+
+"icon"
+
+"https://www.cosmos.esa.int/o/CosmosTheme-theme/images/favicon.ico" />
+
+Archive down for maintenance
+"apple-touch-icon-precomposed"
+
+"https://www.cosmos.esa.int/o/CosmosTheme-theme/images/apple-touch-icon-precomposed.png" />
+
+Archive down for maintenance
+Archive down for maintenance
+"apple-touch-icon-precomposed" sizes="72x72"
+
+"https://www.cosmos.esa.int/o/CosmosTheme-theme/images/apple-touch-icon-72x72-precomposed.png" />
+
+Archive down for maintenance
+"apple-touch-icon-precomposed" sizes="76x76"
+
+"https://www.cosmos.esa.int/o/CosmosTheme-theme/images/apple-touch-icon-76x76-precomposed.png" />
+
+Archive down for maintenance
+"apple-touch-icon-precomposed" sizes="114x114"
+
+"https://www.cosmos.esa.int/o/CosmosTheme-theme/images/apple-touch-icon-114x114-precomposed.png" />
+
+Archive down for maintenance
+"apple-touch-icon-precomposed" sizes="120x120"
+
+"https://www.cosmos.esa.int/o/CosmosTheme-theme/images/apple-touch-icon-120x120-precomposed.png" />
+
+Archive down for maintenance
+"apple-touch-icon-precomposed" sizes="144x144"
+
+"https://www.cosmos.esa.int/o/CosmosTheme-theme/images/apple-touch-icon-144x144-precomposed.png" />
+
+Archive down for maintenance
+"apple-touch-icon-precomposed" sizes="152x152"
+
+"https://www.cosmos.esa.int/o/CosmosTheme-theme/images/apple-touch-icon-152x152-precomposed.png" />
+
+Archive down for maintenance
+"apple-touch-icon-precomposed" sizes="180x180"
+
+"https://www.cosmos.esa.int/o/CosmosTheme-theme/images/apple-touch-icon-180x180-precomposed.png" />
+
+Archive down for maintenance
+"icon" sizes="180x180"
+
+"https://www.cosmos.esa.int/o/CosmosTheme-theme/images/apple-touch-icon-180x180-precomposed.png" />
+
+"text/css" rel="stylesheet" href="/gaia/html_page_resources/css/esdc.css">
+
+"text/css" rel="stylesheet" href="/gaia/html_page_resources/css/gacs.css">
+
+"text/css" rel="stylesheet" href="/gaia/html_page_resources/css/style.css">
+
+Archive down for maintenance
+Archive down for maintenance
+Archive down for maintenance
+r;i[r]=i[r]||function(){
+
+i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+
+s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+
+Archive down for maintenance
+Archive down for maintenance
+Archive down for maintenance
+Archive down for maintenance
+Archive down for maintenance
+Archive down for maintenance
+Archive down for maintenance
+"position: absolute; z-index: -32767; top: -20cm; width: 10cm; height: 10cm; visibility: hidden;"aria-hidden="true"></div>
+
+"position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; display: block;">
+
+"position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px;">
+
+"position: absolute; z-index: -32767; top: -20ex; width: 10em; height: 10ex; visibility: hidden;"aria-hidden="true">
+
+Archive down for maintenance
+"position: absolute; overflow: hidden; left: 0px; top: 0px; right: 0px; height: 120px;">
+
+"position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px;">
+
+"height: 14px; width: 100%; border-spacing: 0; border-collapse: collapse;" >
+
+Archive down for maintenance
+Archive down for maintenance
+"left" style="vertical-align: top; padding: 0px">
+
+"esdc_tb">
+
+Archive down for maintenance
+"esdc_top_sep"><img class="gwt-Image"
+
+"1" height="20" src="/gaia/html_page_resources/images/top_sep.gif"
+
+"height: 14px; width: 2px;"></img></li>
+
+"esdc_external">
+
+"esdch4">
+
+"_blank" href="http://www.esa.int"> <span>
+
+Archive down for maintenance
+Archive down for maintenance
+Archive down for maintenance
+Archive down for maintenance
+"esdc_external">
+
+"esdch4">
+
+"http://www.esa.int/About_Us/ESAC" target="_blank">About
+
+Archive down for maintenance
+Archive down for maintenance
+Archive down for maintenance
+Archive down for maintenance
+Archive down for maintenance
+Archive down for maintenance
+"left" style="vertical-align: top; padding: 0px;"></td>
+
+Archive down for maintenance
+Archive down for maintenance
+Archive down for maintenance
+"esdc_top-title" style="height: 100px">
+
+"title" style="position: absolute; z-index: 2;">gaia archive (OPER)</div>
+
+"http://www.esa.int">
+
+"height: 100px; width: 851px; overflow: hidden; background: url('/gaia/html_page_resources/images/header-cosmos-gaia.png') no-repeat scroll 0px 0px transparent; position: absolute; top: 20px; right: 0px; z-index: 1;" />
+
+Archive down for maintenance
+Archive down for maintenance
+Archive down for maintenance
+Archive down for maintenance
+Archive down for maintenance
+"esdc_tb"
+
+"position: absolute; overflow: hidden; left: 0px; right: 0px; bottom: 0px; height: 20px;">
+
+"float: right; margin: 0 0px 0 0;">
+
+Archive down for maintenance
+"esdch4">Copyright 2000 - 2020 © European Space
+
+Archive down for maintenance
+Archive down for maintenance
+Archive down for maintenance
+Archive down for maintenance
+"position: absolute; overflow: visible; top: 120px; bottom: 30px; left: 0px; right: 0px;">
+
+Archive down for maintenance
+Archive down for maintenance
+Archive down for maintenance
+Archive down for maintenance
+Archive down for maintenance
+"content.html" width="100%" height="100%" seamless style="border: none"></iframe-->
+
+"display: inline-block; position: fixed; top: 0; bottom: 0; left: 0; right: 0; width: 1024px; height: 600px; margin: auto; overflow: auto"-->
+
+Archive down for maintenance
+"top: 0; bottom: 0; left: 0; right: 0; width: 100%; height: 100%; margin:auto; overflow auto">-->
+
+Archive down for maintenance
+"top: 0; bottom: 0; left: 0; right: 0; width: 100%; height: 100%; margin: auto; overflow: auto">
+
+"portlet-column portlet-column-only span12" id="column-1" style="margin: 20px 100px 20px 100px">
+
+"portlet-dropzone portlet-column-content portlet-column-content-only" id="layout-column_column-1">
+
+"portlet-boundary portlet-boundary_56_ portlet-static portlet-static-end portlet-borderless portlet-journal-content " id="p_p_id_56_INSTANCE_zChxaDZZCLJR_">
+
+"p_56_INSTANCE_zChxaDZZCLJR"></span>
+
+"portlet-borderless-container">
+
+"portlet-body">
+
+"journal-content-article">
+
+"DR2background">
+
+"padding:3%">
+
+"https://www.cosmos.esa.int/web/gaia" target="_self">
+
+"" src="https://www.cosmos.esa.int/documents/29201/29227/gaia_RGB_transparent_gif.gif/3bf5526a-3e81-4ce4-a648-0ac1f5bbd8ef?t=1378282536449" style="width: 100px; height: 59px; float: left;">
+
+Archive down for maintenance
+"http://gea.esac.esa.int/archive/" target="_blank">
+
+"" src="https://www.cosmos.esa.int/documents/29201/29222/Gaia+Archive+logo.png/167275a5-9577-4d20-b0e0-a97625a73e0b?t=1469109633000" style="float: right;" width="60" height="59">
+
+Archive down for maintenance
+Archive down for maintenance
+Archive down for maintenance
+"DataReleaseCountDown" style="text-align: center;color:#FFFFFF;">&nbsp;&nbsp;</h2> <p>&nbsp;</p>
+
+"text-align: center;">
+
+"color: rgb(137 8 8);font-size:30px;">Maintenance ongoing!</span>
+
+Archive down for maintenance
+"color: rgb(114,4,4);font-size:18px;">Our system is down for maintenance activities. Meanwhile, the Gaia data is accessible via our bulk-download repository (<a href="http://cdn.gea.esac.esa.int/Gaia/" target="_blank">http://cdn.gea.esac.esa.int/Gaia/</a>) - see our tutorial (<a href="https://www.cosmos.esa.int/web/gaia-users/archive/extract-data#bulk_download" target="_blank">https://www.cosmos.esa.int/web/gaia-users/archive/extract-data#bulk_download</a>) for more information - and via our partner and affiliated data centres (<a href="https://www.cosmos.esa.int/web/gaia/data-access#PartnerDataCentres" target="_blank">https://www.cosmos.esa.int/web/gaia/data-access#PartnerDataCentres</a>).</span><br/><br/><br/><br/>
+
+"color: rgb(114,4,4);font-size:16px;">
+
+"https://www.cosmos.esa.int/web/gaia-users/archive">Gaia's tutorials and help information</a>,
+
+"https://www.cosmos.esa.int/web/gaia"> Gaia's resources for the scientific community</a>
+
+"https://www.cosmos.esa.int/web/gaia/data-access#PartnerDataCentres">Gaia data from partner data centres</a>
+
+Archive down for maintenance
+Archive down for maintenance
+Archive down for maintenance
+Archive down for maintenance
+Archive down for maintenance
+Archive down for maintenance
+Archive down for maintenance
+Archive down for maintenance
+Archive down for maintenance
+Archive down for maintenance
+Archive down for maintenance
+Archive down for maintenance
+Archive down for maintenance
+Archive down for maintenance
+Archive down for maintenance
+Archive down for maintenance
+[Pal5] querying Gaia in 8 annuli to 4.0 deg, PM box +-2.0 around (-2.70,-2.65)
+[Pal5]   annulus 0.00-1.41 attempt 1 failed: HTTPError('OK')
+[Pal5]   annulus 0.00-1.41 attempt 2 failed: HTTPError('OK')
+[Pal5]   annulus 0.00-1.41 attempt 3 failed: HTTPError('OK')
+[Pal5]   annulus 0.00-1.41 attempt 4 failed: HTTPError('OK')
+INFO: Query finished. [astroquery.utils.tap.core]
+[Pal5]   annulus 0.00-1.41: 3,677 stars in 121s
+INFO: Query finished. [astroquery.utils.tap.core]
+[Pal5]   annulus 1.41-2.00: 3,100 stars in 99s
+INFO: Query finished. [astroquery.utils.tap.core]
+[Pal5]   annulus 2.00-2.45: 3,087 stars in 97s
+INFO: Query finished. [astroquery.utils.tap.core]
+[Pal5]   annulus 2.45-2.83: 3,106 stars in 106s
+INFO: Query finished. [astroquery.utils.tap.core]
+[Pal5]   annulus 2.83-3.16: 3,148 stars in 105s
+INFO: Query finished. [astroquery.utils.tap.core]
+[Pal5]   annulus 3.16-3.46: 3,128 stars in 89s
+INFO: Query finished. [astroquery.utils.tap.core]
+[Pal5]   annulus 3.46-3.74: 3,092 stars in 100s
+INFO: Query finished. [astroquery.utils.tap.core]
+[Pal5]   annulus 3.74-4.00: 3,143 stars in 93s
+[Pal5] total 18,909 stars cached after client-side quality cuts
+[NGC6341] querying Gaia in 8 annuli to 3.5 deg, PM box +-2.0 around (-4.93,-0.64)
+INFO: Query finished. [astroquery.utils.tap.core]
+[NGC6341]   annulus 0.00-1.24: 14,743 stars in 243s
+INFO: Query finished. [astroquery.utils.tap.core]
+[NGC6341]   annulus 1.24-1.75: 2,302 stars in 109s
+INFO: Query finished. [astroquery.utils.tap.core]
+[NGC6341]   annulus 1.75-2.14: 2,113 stars in 132s
+INFO: Query finished. [astroquery.utils.tap.core]
+[NGC6341]   annulus 2.14-2.47: 2,193 stars in 152s
+INFO: Query finished. [astroquery.utils.tap.core]
+[NGC6341]   annulus 2.47-2.77: 2,158 stars in 106s
+INFO: Query finished. [astroquery.utils.tap.core]
+[NGC6341]   annulus 2.77-3.03: 2,139 stars in 158s
+INFO: Query finished. [astroquery.utils.tap.core]
+[NGC6341]   annulus 3.03-3.27: 2,014 stars in 172s
+INFO: Query finished. [astroquery.utils.tap.core]
+[NGC6341]   annulus 3.27-3.50: 2,057 stars in 123s
+[NGC6341] total 20,981 stars cached after client-side quality cuts
+[NGC288] querying Gaia in 8 annuli to 3.0 deg, PM box +-2.0 around (4.15,-5.69)
+INFO: Query finished. [astroquery.utils.tap.core]
+[NGC288]   annulus 0.00-1.06: 9,820 stars in 208s
+INFO: Query finished. [astroquery.utils.tap.core]
+[NGC288]   annulus 1.06-1.50: 457 stars in 116s
+INFO: Query finished. [astroquery.utils.tap.core]
+[NGC288]   annulus 1.50-1.84: 392 stars in 122s
+INFO: Query finished. [astroquery.utils.tap.core]
+[NGC288]   annulus 1.84-2.12: 377 stars in 127s
+INFO: Query finished. [astroquery.utils.tap.core]
+[NGC288]   annulus 2.12-2.37: 373 stars in 107s
+INFO: Query finished. [astroquery.utils.tap.core]
+[NGC288]   annulus 2.37-2.60: 356 stars in 87s
+INFO: Query finished. [astroquery.utils.tap.core]
+[NGC288]   annulus 2.60-2.81: 383 stars in 138s
+INFO: Query finished. [astroquery.utils.tap.core]
+[NGC288]   annulus 2.81-3.00: 370 stars in 101s
+[NGC288] total 8,303 stars cached after client-side quality cuts
+[Pal5] cached wide query: Pal5_wide.csv
+[Pal5] candidates=7,041 outside_rt=6792 (bg expect 3377.5)  tail_PA=46.9 PM_PA=45.5 agree=1.4deg  TO_col cluster=0.729 tail=1.003
+[NGC6341] cached wide query: NGC6341_wide.csv
+[NGC6341] candidates=6,380 outside_rt=1385 (bg expect 554.6)  tail_PA=66.3 PM_PA=82.6 agree=16.2deg  TO_col cluster=0.14 tail=0.877
+[NGC288] cached wide query: NGC288_wide.csv
+[NGC288] candidates=4,510 outside_rt=557 (bg expect 187.0)  tail_PA=43.3 PM_PA=143.9 agree=79.4deg  TO_col cluster=0.684 tail=0.714
+
+3 clusters analyzed -> tidal_results.json

@@ -1,0 +1,8 @@
+cluster,common_name,strategy,raw_stars,filtered_stars,members,member_fraction,filtered_csv
+NGC 5139,Omega Centauri,clean,189358,174486,97948,0.5613516270646356,gc_filter_test\NGC_5139_filtered.csv
+NGC 104,47 Tucanae,companion,100680,96879,38035,0.39260314412824243,gc_filter_test\NGC_104_filtered.csv
+NGC 6656,M22,crowded,327004,315019,24139,0.0766271240782302,gc_filter_test\NGC_6656_filtered.csv
+NGC 2419,,distant,1234,1071,781,0.7292250233426704,gc_filter_test\NGC_2419_filtered.csv
+NGC 6266,M62,crowded,42529,39280,0,0.0,gc_filter_test\NGC_6266_filtered.csv
+Terzan 5,,crowded,11295,10228,282,0.027571372702385608,gc_filter_test\Terzan_5_filtered.csv
+Pal 5,,sparse,595,492,244,0.4959349593495935,gc_filter_test\Pal_5_filtered.csv

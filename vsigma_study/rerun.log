@@ -1,0 +1,35 @@
+[NGC5139] N=50,865  V/sig=0.516±0.015  q=good  det_p=0.0e+00  sigma0=11.79  dipole=0.180  counter=False  RV=n=951  [10.3s]  lit=Confirmed rotator
+[NGC104] N=37,784  V/sig=0.628±0.019  q=good  det_p=0.0e+00  sigma0=9.80  dipole=0.074  counter=False  RV=n=660  [9.7s]  lit=Confirmed rotator
+[NGC7078] N=4,698  V/sig=0.291±0.059  q=good  det_p=4.9e-08  sigma0=16.25  dipole=0.312  counter=False  RV=n=57  [6.4s]  lit=Confirmed rotator
+[NGC7089] N=2,756  V/sig=0.142±0.050  q=contaminated  det_p=1.9e-01  sigma0=21.42  dipole=1.220  counter=False  RV=n=50  [5.8s]  lit=Confirmed rotator
+[NGC5904] N=8,519  V/sig=0.467±0.064  q=good  det_p=1.0e-29  sigma0=8.71  dipole=0.442  counter=False  RV=n=101  [7.1s]  lit=Confirmed rotator
+[NGC6656] N=24,126  V/sig=0.316±0.019  q=good  det_p=2.4e-229  sigma0=7.97  dipole=0.178  counter=False  RV=n=421  [12.2s]  lit=Confirmed rotator
+[NGC6273] N=3,712  V/sig=0.509±0.120  q=error-dominated  det_p=7.9e-20  sigma0=5.79  dipole=0.229  counter=False  RV=n=79  [7.3s]  lit=Confirmed rotator
+[NGC5272] N=7,808  V/sig=0.279±0.061  q=good  det_p=6.6e-07  sigma0=13.03  dipole=0.577  counter=False  RV=n=82  [6.8s]  lit=Borderline rotator
+[NGC6752] N=15,084  V/sig=0.260±0.040  q=good  det_p=2.8e-15  sigma0=5.40  dipole=0.110  counter=False  RV=n=216  [2.3s]  lit=Borderline rotator
+[NGC6809] N=7,539  V/sig=0.422±0.079  q=good  det_p=5.5e-10  sigma0=4.23  dipole=0.212  counter=False  RV=n=55  [2.6s]  lit=Borderline / non-rotator
+[NGC288] N=3,492  V/sig=0.195±0.062  q=good  det_p=4.2e-02  sigma0=9.88  dipole=0.451  counter=False  RV=only 30 RV members  [6.7s]  lit=Non-rotator
+[NGC362] N=3,499  V/sig=0.138±0.052  q=good  det_p=4.3e-01  sigma0=9.07  dipole=0.339  counter=False  RV=only 31 RV members  [6.8s]  lit=Not tested / unclear
+[NGC6397] N=16,006  V/sig=0.071±0.020  q=good  det_p=5.5e-01  sigma0=4.25  dipole=0.095  counter=False  RV=n=160  [8.0s]  lit=Not tested / unclear
+[NGC6341] N=3,859  V/sig=0.206±0.044  q=good  det_p=2.5e-06  sigma0=10.95  dipole=0.302  counter=False  RV=n=62  [6.4s]  lit=Not tested / unclear
+[NGC5024] N=2,440  V/sig=0.102±0.071  q=contaminated  det_p=9.4e-01  sigma0=28.19  dipole=2.148  counter=False  RV=only 21 RV members  [7.6s]  lit=Not tested / unclear
+[NGC2419] N=262  V/sig=n/a±0.000  q=unmeasurable  det_p=8.8e-01  sigma0=0.00  dipole=16.795  counter=False  RV=only 0 RV members  [6.7s]  lit=Not tested / unclear
+[NGC1851] N=1,268  V/sig=0.177±0.186  q=error-dominated  det_p=5.9e-01  sigma0=7.04  dipole=0.555  counter=False  RV=only 12 RV members  [5.9s]  lit=Not tested / unclear
+[NGC6266] N=7,176  V/sig=0.539±0.065  q=contaminated  det_p=1.9e-39  sigma0=8.61  dipole=0.105  counter=False  RV=n=192  [7.1s]  lit=Not tested / unclear
+[Terzan5] N=582  V/sig=0.125±0.072  q=contaminated  det_p=8.2e-01  sigma0=20.01  dipole=1.546  counter=False  RV=only 6 RV members  [6.0s]  lit=Not tested / unclear
+[NGC6440] N=2,065  V/sig=0.192±0.076  q=contaminated  det_p=8.5e-02  sigma0=16.66  dipole=1.924  counter=False  RV=only 29 RV members  [5.6s]  lit=Not tested / unclear
+[NGC5286] N=1,878  V/sig=0.469±0.536  q=contaminated  det_p=1.5e-01  sigma0=4.63  dipole=1.658  counter=False  RV=only 34 RV members  [5.7s]  lit=Not tested / unclear
+[NGC6121] N=15,815  V/sig=0.131±0.031  q=good  det_p=5.2e-03  sigma0=5.31  dipole=0.037  counter=False  RV=n=89  [8.6s]  lit=Not tested / unclear
+INFO: Query finished. [astroquery.utils.tap.core]
+[Pal5] N=243  V/sig=n/a±0.000  q=unmeasurable  det_p=8.3e-01  sigma0=0.00  dipole=2.092  counter=False  RV=only 0 RV members  [17.8s]  lit=Not tested / unclear
+INFO: Query finished. [astroquery.utils.tap.core]
+[NGC6544] N=6,640  V/sig=0.137±0.040  q=good  det_p=3.8e-01  sigma0=7.28  dipole=0.089  counter=False  RV=only 13 RV members  [11.4s]  lit=Not tested / unclear
+
+24 clusters done, 0 failures: []
+Correlations (Spearman):
+  V/sigma vs [Fe/H]                     rho=-0.03  p=0.893
+  V/sigma vs concentration c            rho=-0.20  p=0.383
+  V/sigma vs half-light radius (pc)     rho=+0.38  p=0.080
+  V/sigma vs sigma0 (km/s)              rho=-0.16  p=0.477
+  V/sigma vs log10 N members            rho=+0.37  p=0.092
+  V/sigma vs distance (kpc)             rho=-0.01  p=0.974

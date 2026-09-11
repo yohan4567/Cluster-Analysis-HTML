@@ -1,0 +1,67 @@
+[
+ {
+  "cluster": "Palomar 5",
+  "finding": "Discovery of two well-defined tidal tails emerging from the cluster in SDSS commissioning data, extending symmetrically to both sides and subtending 2.6 degrees on the sky, stretching along the direction of constant Galactic latitude. Tail stars comprise roughly one third of the cluster's star counts at 19.5<i*<22.0, indicating heavy mass loss; the authors note the tail orientation is a key constraint on the cluster's Galactic orbit.",
+  "source": "Odenkirchen et al. 2001, ApJ 548, L165 (arXiv:astro-ph/0012311), 'Detection of Massive Tidal Tails around the Globular Cluster Palomar 5 with SDSS Commissioning Data'"
+ },
+ {
+  "cluster": "Palomar 5",
+  "finding": "With more SDSS data the tails were traced over a 10-degree arc on the sky (~4 kpc projected at the cluster distance). Star counts in the tails total ~1.2x the number remaining in the cluster. The debris stream is significantly curved, demonstrating acceleration by the Galactic potential (i.e., the tails delineate the orbit); radial surface density follows a power law r^gamma with -1.5<gamma<-1.2, and most mass loss occurred within the last ~2 Gyr.",
+  "source": "Odenkirchen et al. 2003, AJ 126, 2385 (arXiv:astro-ph/0307446), 'The Extended Tails of Palomar 5: A 10-degree Arc of Globular Cluster Tidal Debris'"
+ },
+ {
+  "cluster": "Palomar 5",
+  "finding": "Deep DECaLS grz photometry gave 'the cleanest view of a stellar stream beyond ~20 kpc': significant density variations along the stream, a wide low-surface-brightness extension of the leading tail, and sharp changes in the direction (track) of both the leading and trailing tails. A rotating Galactic bar can reproduce the width/density profile but not all track deviations of the trailing tail; the authors propose streams plus deep photometry as probes of perturbations including dark-matter subhalos. (Note: this paper is DECaLS photometry, not primarily Gaia.)",
+  "source": "Bonaca et al. 2020, ApJ 889, 70 (arXiv:1910.00592), 'Variations in the Width, Density, and Direction of the Palomar 5 Tidal Tails'"
+ },
+ {
+  "cluster": "Palomar 5",
+  "finding": "Gaia DR2 kinematics-only (data-driven) detection extended the known Pal 5 stream to ~30 degrees on the sky, including 7 newly detected degrees along the leading arm; in this detection the leading and trailing arms are symmetric in length and of near-constant width, contrasting with earlier photometric maps in which the leading tail appeared much shorter than the trailing.",
+  "source": "Starkman, Bovy & Webb 2020, MNRAS 493, 4978 (arXiv:1909.03048), 'An extended Pal 5 stream in Gaia DR2'"
+ },
+ {
+  "cluster": "Palomar 5",
+  "finding": "STREAMFINDER applied to Gaia DR2/EDR3 astrometry recovered 'very long tidal tails' associated with 15 globular clusters, explicitly including Pal 5 (and M92). Caveat on the requested citation: no Ibata et al. 2019 paper specifically maps Pal 5 \u2014 Ibata, Malhan & Martin 2019 (ApJ 872, 152, 'Streams of the Gaping Abyss') covers inner-Galaxy streams without Pal 5; the Pal 5-with-Gaia results are Starkman et al. 2020 (Gaia DR2) and this Ibata et al. 2021 paper (Gaia EDR3). Earlier CFHT work (Ibata, Lewis & Martin 2016, ApJ 819, 1) recovered ~19 degrees of stream, mainly the trailing arm, establishing a strong leading/trailing asymmetry (as summarized in Ibata et al. 2022, MNRAS 512, 315, 'Forward and back: kinematics of the Palomar 5 tidal tails').",
+  "source": "Ibata et al. 2021, ApJ 914, 123 (arXiv:2012.05245), 'Charting the Galactic Acceleration Field I'; asymmetry summary in MNRAS 512, 315 (2022) via academic.oup.com/mnras/article/512/1/315/6528378"
+ },
+ {
+  "cluster": "Palomar 5",
+  "finding": "Independent SDSS recovery: the already-known tidal tails of Pal 5 spanning 10 degrees on the sky were recovered, with the theoretically predicted S-shape near the cluster clearly visible in the contour maps.",
+  "source": "Jordi & Grebel 2010, A&A 522, A71 (arXiv:1008.2966), 'Search for extratidal features around 17 globular clusters in the SDSS'"
+ },
+ {
+  "cluster": "NGC 6341 (M92)",
+  "finding": "Detection of a ~17-degree-long stellar stream (2.5 kpc at M92's distance) emanating from the cluster, found in a matched-filter (color-color-magnitude) map built from CFIS + Pan-STARRS 1 photometry; width dispersion 0.29 degrees (42 pc); stellar mass (3.17 +/- 0.89) x 10^4 Msun, ~10% of the current cluster mass. N-body simulations indicate the stream formed very recently (within the last ~500 Myr). Part of the stream was independently detected by Sollima (2020) in Gaia DR2.",
+  "source": "Thomas et al. 2020, ApJ 902, 89 (arXiv:2009.04487), 'The Hidden Past of M92: Detection and Characterization of a Newly Formed 17-degree Long Stellar Stream Using the Canada-France Imaging Survey'"
+ },
+ {
+  "cluster": "NGC 6341 (M92)",
+  "finding": "In a systematic Gaia DR2 5D mixture-model search around 18 Galactic globular clusters, NGC 6341 is one of five clusters (with NGC 288, NGC 2298, NGC 5139, NGC 7099) showing 'spectacular tidal tails' extending to the border of the analysed field at 5 degrees from the cluster center; at large distances the detected overdensities are systematically aligned with the cluster orbital path, in agreement with N-body predictions.",
+  "source": "Sollima 2020, MNRAS 495, 2222 (arXiv:2004.13754), 'The eye of Gaia on globular clusters structure: tidal tails'"
+ },
+ {
+  "cluster": "NGC 6341 (M92)",
+  "finding": "SDSS study detected a halo of extratidal stars around M92 with a slight elongation in the direction of motion; the number density profile shows an overabundance of stars around the tidal radius, and the distortion aligns with the orbital path, consistent with the cluster being near perigalacticon (inner tails align with the orbit near perigalacticon per Montuori et al. 2007 predictions). M92 was also among the 15 clusters with very long Gaia EDR3 tidal tails in Ibata et al. 2021.",
+  "source": "Jordi & Grebel 2010, A&A 522, A71 (arXiv:1008.2966); Ibata et al. 2021, ApJ 914, 123 (arXiv:2012.05245)"
+ },
+ {
+  "cluster": "NGC 288",
+  "finding": "Correction to the task premise: NGC 288 is NOT in the Jordi & Grebel 2010 sample \u2014 their 17 SDSS clusters (NGC 2419, 4147, 5024/M53, 5053, 5272/M3, 5466, Pal 5, 5904/M5, 6205/M13, 6341/M92, 7006, 7078/M15, 7089/M2, Pal 1, 3, 4, 14) exclude it. Earlier extra-tidal evidence for NGC 288 instead comes from Grillmair et al. 1995 (first reported extra-tidal extension) and Shipp et al. 2018 (DES photometry, possible extra-tidal features over ~8 degrees), both as summarized in the introduction of Grillmair 2024 (arXiv:2409.17361).",
+  "source": "Jordi & Grebel 2010, A&A 522, A71 (cluster list from full text at aanda.org/articles/aa/pdf/2010/14/aa14392-10.pdf); Grillmair et al. 1995 and Shipp et al. 2018 as cited in arXiv:2409.17361"
+ },
+ {
+  "cluster": "NGC 288",
+  "finding": "Gaia DR2 confirmation of tidal tails: extra-tidal stars in Gaia DR2 photometry/astrometry share comparable sky positions and proper motions with an N-body simulation of the cluster's disruption along its orbit. The tails form a diffuse bipolar structure that becomes compressed along the cluster's orbital path near apocentre (NGC 288 is currently close to apocentre), turning previously 'suspected' extra-tidal structure into a kinematically confirmed detection.",
+  "source": "Kaderali et al. 2019, MNRAS Letters 484, L114 (arXiv:1809.04108), 'Rediscovering the Tidal Tails of NGC 288 with Gaia DR2'"
+ },
+ {
+  "cluster": "NGC 288",
+  "finding": "In Sollima's systematic Gaia DR2 search, NGC 288 is one of the five clusters with 'spectacular tidal tails' extending up to the border of the field of view at 5 degrees from the center; overdensity orientation at large radii is systematically aligned with the orbital path. Later work (Grillmair 2024, ApJ, using Pan-STARRS, DECaLS and Gaia DR3) extends this dramatically: a ~35-70 degree-long trailing tail (path better matched when an infalling LMC is included) and a leading tail at least ~40 degrees long composed of at least two narrow, spatially offset, kinematically distinct streams interpreted as multiple generations of stripped debris.",
+  "source": "Sollima 2020, MNRAS 495, 2222 (arXiv:2004.13754); Grillmair 2024, ApJ (arXiv:2409.17361), 'The Multiple Extended Tidal Tails of NGC 288'"
+ },
+ {
+  "cluster": "General (theory)",
+  "finding": "N-body theory: stars escape the cluster around the tidal radius (through the inner and outer Lagrange-point regions on the near and far side toward/away from the Galactic center) and drift into a leading and a trailing tail. Montuori et al. 2007 show the tails are good tracers of the cluster's orbital path only far from the cluster (beyond ~7-8 tidal radii); on smaller scales the inner tails point mainly toward the Galactic center, with inner-tail orientation strongly correlated with orbital phase \u2014 so the orbit cannot be read off the inner tail direction alone. Kupper et al. (2010, MNRAS; arXiv:0909.2619) add that escape happens mainly from the tidal radius and that epicyclic overdensities arise in the tails on any orbit; Kaderali et al. 2019 note tails are bipolar and compress along the orbit at apocentre. Observationally, Sollima 2020 confirms large-scale tail alignment with cluster orbits, 'in agreement with the predictions of N-body simulations.'",
+  "source": "Montuori et al. 2007, A&A (arXiv:astro-ph/0611204), 'Tidal tails around globular clusters: are they a good tracer of cluster orbits?'; Kupper et al. 2010 (arXiv:0909.2619); Kaderali et al. 2019 (arXiv:1809.04108); Sollima 2020 (arXiv:2004.13754)"
+ }
+]

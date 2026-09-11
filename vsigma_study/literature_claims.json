@@ -1,0 +1,82 @@
+[
+ {
+  "parameter": "Relaxation time (two-body relaxation timescale)",
+  "claim": "Positive: V/sigma increases with relaxation time \u2014 GCs with longer relaxation times (also the more massive ones) show stronger internal rotation. Presented as the paper's headline correlation, interpreted as primordial rotation surviving longer where relaxation is slow; no formal correlation coefficient quoted, sample of 51 GCs (11 with >3-sigma rotation, V/sigma ~ 0.08-0.51).",
+  "source": "Bianchini et al. 2018, MNRAS 481, 2125 (arXiv:1806.02580), 'The internal rotation of globular clusters revealed by Gaia DR2'"
+ },
+ {
+  "parameter": "Mass",
+  "claim": "Positive: more massive GCs display stronger internal rotation (mass and relaxation time co-vary in their sample). Qualitative trend, no coefficient given.",
+  "source": "Bianchini et al. 2018, MNRAS 481, 2125 (arXiv:1806.02580)"
+ },
+ {
+  "parameter": "Relaxation time",
+  "claim": "Positive: internal rotation strength correlates with relaxation time; interpreted as central rotation being a relic of formation that is gradually erased by two-body relaxation. Based on 22 GCs (13 with >3-sigma rotation); trend reported, no coefficient.",
+  "source": "Kamann et al. 2018, MNRAS 473, 5591 (arXiv:1710.07257), 'A stellar census in globular clusters with MUSE'"
+ },
+ {
+  "parameter": "Ellipticity (flattening)",
+  "claim": "Positive: rotation strength is linked to ellipticity \u2014 more rotating clusters are more flattened; explicitly stated to confirm earlier findings (Fabricius 2014). Trend, no coefficient.",
+  "source": "Kamann et al. 2018, MNRAS 473, 5591 (arXiv:1710.07257)"
+ },
+ {
+  "parameter": "Ellipticity (outer flattening)",
+  "claim": "Positive and described as a tight correlation: central rotation amplitude correlates with outer ellipticity, taken as evidence that rotation (not the Galactic tidal field) drives the flattening. Rotation detected in all 11 clusters observed; correlation qualitative/tight but no numeric coefficient.",
+  "source": "Fabricius et al. 2014, ApJL 787, L26 (arXiv:1405.1722), 'Central rotations of Milky Way Globular Clusters' (VIRUS-W)"
+ },
+ {
+  "parameter": "Central velocity dispersion (proxy for mass)",
+  "claim": "Positive and described as tight: central rotation amplitude correlates with published central velocity dispersion, implying more massive/higher-dispersion clusters rotate more strongly. Qualitative 'tight' correlation, no coefficient.",
+  "source": "Fabricius et al. 2014, ApJL 787, L26 (arXiv:1405.1722)"
+ },
+ {
+  "parameter": "Half-mass radius",
+  "claim": "Weak positive: rotation strength (fraction of kinetic energy in rotation, xi) weakly correlates with half-mass radius; among the largest correlation probabilities but still below 3-sigma significance. Sample of 62 GCs, 15 with clear rotation.",
+  "source": "Sollima, Baumgardt & Hilker 2019, MNRAS 485, 1460 (arXiv:1902.05895), 'The eye of Gaia on globular clusters kinematics: internal rotation'"
+ },
+ {
+  "parameter": "Relaxation time",
+  "claim": "Weak positive: xi weakly correlates with half-mass relaxation time \u2014 GCs with longer relaxation times rotate faster; below 3-sigma. Consistent in direction with Bianchini 2018 and Kamann 2018.",
+  "source": "Sollima, Baumgardt & Hilker 2019, MNRAS 485, 1460 (arXiv:1902.05895)"
+ },
+ {
+  "parameter": "Destruction rate",
+  "claim": "Negative (anticorrelation): rotation strength xi anticorrelates with the tidal destruction rate \u2014 clusters undergoing fast destruction have lost much of their original angular momentum. Trend, below 3-sigma given small sample.",
+  "source": "Sollima, Baumgardt & Hilker 2019, MNRAS 485, 1460 (arXiv:1902.05895)"
+ },
+ {
+  "parameter": "Ellipticity (flattening)",
+  "claim": "None: explicitly find NO link between rotation and flattening, contradicting Fabricius et al. 2014 and Kamann et al. 2018. (No significant correlation with mass or metallicity reported either.)",
+  "source": "Sollima, Baumgardt & Hilker 2019, MNRAS 485, 1460 (arXiv:1902.05895)"
+ },
+ {
+  "parameter": "Metallicity [Fe/H]",
+  "claim": "Positive: rotation-to-dispersion ratio A_rot/sigma_0 increases with metallicity \u2014 metal-rich clusters rotate more. Reported as a significant correlation but weaker than the horizontal-branch dependence and 'unlikely to be the sole parameter'; based on ~25 GCs.",
+  "source": "Bellazzini et al. 2012, A&A 538, A18 (as discussed/confirmed in Kacharov et al. 2014, A&A 567, A69, arXiv:1406.1552)"
+ },
+ {
+  "parameter": "Horizontal-branch (HB) morphology",
+  "claim": "Strong correlation: GCs with blue HBs are slower rotators while those with red or extended HBs are faster rotators; described as a very strong correlation and the tightest of the parameters examined (stronger than the metallicity trend).",
+  "source": "Bellazzini et al. 2012, A&A 538, A18 (via Kacharov et al. 2014, arXiv:1406.1552)"
+ },
+ {
+  "parameter": "Absolute magnitude / luminosity (mass proxy)",
+  "claim": "Positive: rotation amplitude is connected to absolute magnitude and central velocity dispersion, both tied to total cluster mass \u2014 brighter/more massive clusters rotate more. Reported as a connection, not quantified with a coefficient.",
+  "source": "Bellazzini et al. 2012, A&A 538, A18 (via Kacharov et al. 2014, arXiv:1406.1552)"
+ },
+ {
+  "parameter": "Ellipticity (flattening)",
+  "claim": "None/weak: Bellazzini et al. 2012 (and Lardo et al. 2015) did NOT find a clear correlation between rotation and ellipticity, in contrast to Fabricius 2014 and Kamann 2018 \u2014 a point of disagreement in the literature.",
+  "source": "Bellazzini et al. 2012, A&A 538, A18 / Lardo et al. 2015 (noted in Fabricius et al. 2014 and Kacharov et al. 2014 discussions)"
+ },
+ {
+  "parameter": "Ellipticity (flattening)",
+  "claim": "Positive: using V/sigma-vs-ellipticity diagrams they argue higher flattening corresponds to higher V/sigma, concluding rotation is the driving factor of GC ellipticities; NGC 4372 is flagged as an outlier with unusually high rotation for its (very low) metallicity, consistent with a positive rotation-metallicity trend overall.",
+  "source": "Kacharov et al. 2014, A&A 567, A69 (arXiv:1406.1552), 'A study of rotating globular clusters: NGC 4372'"
+ },
+ {
+  "parameter": "Relaxation / dynamical evolution (rotation detection rate)",
+  "claim": "Not a fitted correlation but a strong claim of prevalence: rotation signals detected in 10 of 11 clusters at a few half-mass radii (Ferraro 2018) and one of the cleanest coherent rotation patterns seen in M5 (Lanzoni 2018); the authors frame residual angular momentum as a relic of formation gradually erased by dynamical (relaxation) evolution \u2014 consistent in direction with the rotation vs relaxation-time trend, but no population correlation coefficient is fit.",
+  "source": "Ferraro et al. 2018, ApJ 860, 50 (MIKiS I, arXiv:1804.08618) and Lanzoni et al. 2018, ApJ 861, 16 (M5, arXiv:1804.10509)"
+ }
+]

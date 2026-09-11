@@ -1,0 +1,2 @@
+cluster,common_name,strategy,raw_stars,filtered_stars,members,member_fraction,filtered_csv
+NGC 6121,M4,crowded,122358,114246,20064,0.1756210283073368,C:\Users\hoche\OneDrive\Desktop\Cluster Analysis HTML\data\gc_filter_outputs_v2\NGC_6121_filtered.csv
