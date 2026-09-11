@@ -61,6 +61,11 @@ These measurements provide the foundation for studying the spatial distribution 
 
 # Getting Started
 
+A little note here, if you are trying to edit the code, make sure you run:
+```text
+pip install -r requirements.txt
+```
+
 ## Starting the App
 
 ### Windows
