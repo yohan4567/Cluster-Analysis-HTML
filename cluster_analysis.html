@@ -436,9 +436,6 @@ input[type=checkbox]{accent-color:var(--cool); width:15px; height:15px}
           <button class="nav-item" data-view="rankings">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 19V9m5 10V5m5 14v-7m5 7V8"/></svg>
             Rankings</button>
-          <button class="nav-item" data-view="custom">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 5v14M5 12h14"/></svg>
-            Custom</button>
         </aside>
         <div class="stage">
           <div class="view-panel active" data-view="overview">
@@ -605,10 +602,6 @@ input[type=checkbox]{accent-color:var(--cool); width:15px; height:15px}
               </div>
               <p class="plot-note" style="margin-top:12px">Left: rotation strength V/&sigma;, with error bars; the two clusters with no bar (NGC 2419, Pal 5) are unmeasurable &mdash; Gaia's errors exceed their internal motions. Right: dynamical age, the number of relaxation times a cluster has lived through (Age / t<sub>rh</sub>); a high value means many close stellar encounters have had time to erase ordered rotation. These two quantities are the strongest correlation in our sample (Spearman &rho; = &minus;0.45, p = 0.035): dynamically old clusters rotate less.</p>
             </div>
-          </div>
-          <div class="view-panel" data-view="custom">
-            <div class="empty"><div class="empty-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 5v14M5 12h14"/></svg></div>
-              <h2>Custom view</h2><p>A slot for your own plots and experiments.</p><span class="tag">Not built yet</span></div>
           </div>
         </div>
       </div>
@@ -1321,6 +1314,11 @@ function showCMD() {
   $('#cmd-unavailable').style.display = 'none';
   $('#cmd-content').style.display = 'none';
   if (!hasData) return;
+  if (state.catalogVariant === 'dr3_fpr') {
+    $('#cmd-unavailable').innerHTML = '<h2>CMD unavailable for FPR data</h2><p>The Gaia FPR extension contains astrometry and proper motions, but no calibrated BP/RP colour columns. Use the Gaia DR3 dataset to view the colour–magnitude diagram.</p>';
+    $('#cmd-unavailable').style.display = 'block';
+    return;
+  }
   const data = ensureParsedCMD();
   if (!data) { $('#cmd-unavailable').style.display = 'block'; return; }
   $('#cmd-content').style.display = 'block';

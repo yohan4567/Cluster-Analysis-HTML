@@ -176,7 +176,16 @@ Typical files include:
 | `map_3d.png`     | 3D cluster visualization                                 |
 | `gaia_rv.csv`    | Gaia radial velocities used for 3D spin-axis analysis    |
 
-`NGC5139` additionally contains special **MODELED** and **RAW** 3D datasets and their corresponding documentation.
+`NGC5139` provides two selectable catalog versions:
+
+| File | Contents |
+|------|----------|
+| `filtered_dr3.csv` | Gaia DR3 filtered catalog with photometry and CMD support |
+| `filtered_dr3_fpr.csv` | Gaia DR3 plus Gaia FPR crowded-field extension |
+
+The FPR extension improves coverage in the crowded core, but its rows contain astrometry and proper motions without calibrated BP/RP colours. Therefore the CMD view is unavailable when this version is selected; use the DR3 version for colour–magnitude analysis. The large FPR file is tracked with Git LFS.
+
+`NGC5139` also contains special **MODELED** and **RAW** 3D datasets and their corresponding documentation.
 
 The `data/` directory also contains project-wide files:
 
