@@ -4,3 +4,6 @@ scipy
 matplotlib
 python-docx
 requests
+scikit-learn
+astroquery
+openpyxl

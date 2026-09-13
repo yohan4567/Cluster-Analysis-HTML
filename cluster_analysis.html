@@ -352,6 +352,14 @@ input[type=checkbox]{accent-color:var(--cool); width:15px; height:15px}
         <div class="result-card" id="data-cached-card" style="display:none">
           <div class="section-h" style="font-size:16px; margin-bottom:6px">Saved file found</div>
           <p class="section-sub" id="cached-info">—</p>
+          <div id="catalog-choice" style="display:none; margin:10px 0">
+            <label for="catalog-variant">Dataset for NGC 5139</label>
+            <select id="catalog-variant" class="select-input">
+              <option value="dr3">Gaia DR3</option>
+              <option value="dr3_fpr">Gaia DR3 + FPR (crowded-core extension)</option>
+            </select>
+            <small style="display:block; margin-top:5px; opacity:.75">FPR rows use proper-motion membership only and do not add calibrated colours.</small>
+          </div>
           <div class="btn-row">
             <button class="btn btn-primary" id="btn-load-cached">Load &#8594;</button>
           </div>
@@ -779,7 +787,7 @@ const state = {
   cluster: null, clusterId: null, csvText: null, csvName: null, csvRows: 0,
   resultCsv: null, summary: null, candidate: null, cachedInfo: null, parsed2D: null,
   parsedCMD: undefined, parsed3D: null,
-  clientValidation: null
+  clientValidation: null, catalogVariant: 'dr3'
 };
 let serverReady = false;
 let API_BASE = '';                 // '' = same-origin (normal launcher flow)
@@ -871,6 +879,7 @@ function idSlug(c) {
 function setTarget(c) {
   state.cluster = c;
   state.clusterId = idSlug(c);
+  state.catalogVariant = state.clusterId === 'NGC5139' ? (state.catalogVariant || 'dr3') : 'dr3';
   $('#chip-name').textContent = c.name ? `${c.id} · ${c.name}` : c.id;
   $('#chip-co').textContent = `RA ${fmt(c.ra)}°  Dec ${fmt(c.dec)}°`;
   showScreen('screen-filter');
@@ -942,6 +951,13 @@ function renderDataState(obj) {
   hideAllDataCards();
   state.cachedInfo = obj.filtered || null;
   state.candidate = obj.candidate || null;
+  const choice = $('#catalog-choice');
+  if (choice) {
+    const variants = obj.variants || [];
+    choice.style.display = (state.clusterId === 'NGC5139' && variants.length > 1) ? 'block' : 'none';
+    const sel = $('#catalog-variant');
+    if (sel) sel.value = state.catalogVariant;
+  }
 
   if (state.cachedInfo) {
     const f = state.cachedInfo;
@@ -1079,11 +1095,12 @@ async function loadCached() {
   setBusy(true);
   setRunStatus('loading', 'Loading cached results…');
   try {
-    const r = await fetch(api(`/load_filtered?id=${encodeURIComponent(state.clusterId)}`), { cache: 'no-store' });
+    const r = await fetch(api(`/load_filtered?id=${encodeURIComponent(state.clusterId)}&variant=${encodeURIComponent(state.catalogVariant || 'dr3')}`), { cache: 'no-store' });
     const obj = await r.json();
     if (obj.error) throw new Error(obj.error);
     state.resultCsv = obj.csv;
     state.summary = obj.summary;
+    state.csvName = obj.filename || state.csvName;
     state.parsed2D = null;
     state.parsedCMD = undefined;
     state.parsed3D = null;
@@ -2505,6 +2522,7 @@ async function quickSwitch(cid) {
   if (!c) return;
   state.cluster = c;
   state.clusterId = idSlug(c);
+  state.catalogVariant = state.clusterId === 'NGC5139' ? (state.catalogVariant || 'dr3') : 'dr3';
   state.rotationData = null;
   $('#chip-name').textContent = c.name ? `${c.id} · ${c.name}` : c.id;
   $('#chip-co').textContent = `RA ${fmt(c.ra)}°  Dec ${fmt(c.dec)}°`;
@@ -2631,6 +2649,10 @@ function initEvents() {
     if (state.candidate) saveFilteredFile({ type: 'file', filename: state.candidate.filename });
   });
   $('#btn-load-cached').addEventListener('click', loadCached);
+  $('#catalog-variant').addEventListener('change', e => {
+    state.catalogVariant = e.target.value;
+    loadCached();
+  });
   $('#btn-download').addEventListener('click', downloadCsv);
   $('#btn-analysis').addEventListener('click', () => {
     $('#stepper').style.display = 'none';

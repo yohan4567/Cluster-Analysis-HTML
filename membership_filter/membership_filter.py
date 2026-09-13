@@ -612,7 +612,19 @@ def main():
     parser.add_argument("--target-list", default=TARGET_LIST_DEFAULT)
     parser.add_argument("--output-folder", default=str(OUTPUT_FOLDER_DEFAULT))
     parser.add_argument("--only", nargs="*", help="Optional cluster IDs, e.g. NGC 5139")
+    parser.add_argument("--include-fpr", action="store_true",
+                        help="Build a versioned NGC 5139 DR3+FPR CSV from the existing DR3 baseline")
+    parser.add_argument("--dr3-baseline", type=Path,
+                        default=SCRIPT_DIR.parent / "data/NGC5139/filtered.csv")
+    parser.add_argument("--fpr-mirror", choices=["esa", "aip"], default="esa")
     args = parser.parse_args()
+
+    if args.include_fpr:
+        if args.only and args.only != ["NGC 5139"]:
+            parser.error("The published FPR crowded-field extension supports NGC 5139 only.")
+        from fpr_extension import build_catalog
+        build_catalog(args.dr3_baseline, Path(args.output_folder), args.target_list, args.fpr_mirror)
+        return
 
     targets = read_targets(args.target_list)
     if args.only:

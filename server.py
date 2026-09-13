@@ -82,6 +82,22 @@ def cluster_dir(cid):
 def filtered_path(cid):
     return os.path.join(cluster_dir(cid), "filtered.csv")
 
+def catalog_path(cid, variant="dr3"):
+    if cid == "NGC5139" and variant == "dr3_fpr":
+        return os.path.join(cluster_dir(cid), "filtered_dr3_fpr.csv")
+    if cid == "NGC5139" and variant == "dr3":
+        p = os.path.join(cluster_dir(cid), "filtered_dr3.csv")
+        return p if os.path.exists(p) else filtered_path(cid)
+    return filtered_path(cid)
+
+def catalog_variants(cid):
+    if cid != "NGC5139": return []
+    out = []
+    for key, label in (("dr3", "Gaia DR3"), ("dr3_fpr", "Gaia DR3 + Gaia FPR")):
+        p = catalog_path(cid, key)
+        if os.path.exists(p): out.append({"id": key, "label": label, "filename": os.path.basename(p), "rows": count_rows(p)})
+    return out
+
 
 def meta_path(cid):
     return os.path.join(cluster_dir(cid), "filtered.meta.json")
@@ -458,15 +474,18 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 self._send_json({"error": "missing id"}, 400)
                 return
             resp = {"filtered": None, "candidate": None}
-            fp = filtered_path(cid)
-            meta = load_or_build_meta(cid)
+            variant = (qs.get("variant") or ["dr3"])[0]
+            fp = catalog_path(cid, variant)
+            meta = summarize_path(fp) if os.path.exists(fp) else None
             if meta is not None:
                 resp["filtered"] = {
                     "filename": os.path.basename(fp),
                     "mtime": os.path.getmtime(fp),
                     **meta,
                 }
-                ensure_plots_async(cid)   # picking a target renders its plots
+                resp["variants"] = catalog_variants(cid)
+                resp["selected_variant"] = variant
+                if variant == "dr3": ensure_plots_async(cid)
             else:
                 resp["candidate"] = find_candidate(cid)
             self._send_json(resp)
@@ -542,14 +561,21 @@ class Handler(http.server.BaseHTTPRequestHandler):
 
         if path == "/load_filtered":
             cid = sanitize_id((qs.get("id") or [""])[0])
-            fp = filtered_path(cid)
+            variant = (qs.get("variant") or ["dr3"])[0]
+            fp = catalog_path(cid, variant)
             if not cid or not os.path.exists(fp):
                 self._send_json({"error": f"no cached file for '{cid}'"}, 404)
                 return
             csv_text = open(fp, "r", encoding="utf-8").read()
-            meta = load_or_build_meta(cid) or {}
-            ensure_plots_async(cid)
-            self._send_json({"summary": meta, "csv": csv_text, "cached": True})
+            meta = summarize_path(fp)
+            meta["catalog_variant"] = variant
+            try:
+                import pandas as pd
+                o = pd.read_csv(fp, usecols=["catalog_origin"])["catalog_origin"].value_counts()
+                meta["catalog_origin_counts"] = {str(k): int(v) for k, v in o.items()}
+            except Exception: pass
+            if variant == "dr3": ensure_plots_async(cid)
+            self._send_json({"summary": meta, "csv": csv_text, "cached": True, "variant": variant, "filename": os.path.basename(fp), "variants": catalog_variants(cid)})
             return
 
         self._send_json({"error": "not found"}, 404)
