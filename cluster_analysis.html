@@ -235,6 +235,22 @@ input[type=checkbox]{accent-color:var(--cool); width:15px; height:15px}
   .nav-item{width:max-content; margin:0}
   .entry h1{font-size:32px}
 }
+/* Rotation controls share the workbench palette and spacing. */
+.rotation-settings{padding:20px;margin-bottom:20px;border:1px solid var(--line);border-radius:var(--r);background:var(--panel2)}
+.rotation-settings-title{margin:0 0 16px;font-size:14px;font-weight:600;color:var(--ink)}
+.rotation-controls{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap}
+.rotation-controls label{display:flex;flex-direction:column;gap:7px;font-size:12px;color:var(--ink-dim,#93a0b8)}
+.rotation-controls select,.rotation-controls input{box-sizing:border-box;height:42px;padding:0 12px;border:1px solid var(--line2);border-radius:8px;background:var(--panel);color:var(--ink);font:inherit;font-size:14px;color-scheme:dark}
+.rotation-controls select{min-width:200px}.rotation-controls input{width:90px}
+.rotation-controls select:focus-visible,.rotation-controls input:focus-visible{outline:2px solid var(--cool-2);outline-offset:2px}
+.rotation-controls .btn{min-height:42px;padding:10px 18px}
+#rot-bin-status{display:block;font-size:12px;line-height:1.6;color:var(--ink-dim,#93a0b8);margin-top:10px}
+#rot-bin-status:empty{display:none}
+#rot-bin-details{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;font-size:12px;line-height:1.7;color:var(--ink-dim,#93a0b8)}
+#rot-bin-details .bin-chip{padding:3px 10px;border:1px solid var(--line);border-radius:20px}
+#rot-bin-details .bin-note{flex-basis:100%;margin:4px 0 0}
+.math-inline{font-family:Georgia,'Times New Roman',serif;font-style:italic;white-space:nowrap}.math-inline sub{font-size:.75em;font-style:normal}
+@media(max-width:600px){.rotation-controls label{flex:1}.rotation-controls select,.rotation-controls input{width:100%;min-width:0}.rotation-controls .btn{width:100%}}
 </style>
 </head>
 <body>
@@ -558,6 +574,17 @@ input[type=checkbox]{accent-color:var(--cool); width:15px; height:15px}
             </div>
           </div>
           <div class="view-panel" data-view="rotation" style="flex-direction:column; align-items:stretch; overflow:auto">
+            <div class="rotation-settings">
+              <h3 class="rotation-settings-title">Radial binning</h3>
+              <div class="rotation-controls">
+                <label for="rot-bin-mode">Method<select id="rot-bin-mode"><option value="equal_number">Equal number</option><option value="equal_radius">Equal radius width</option></select></label>
+                <label for="rot-bin-count">Number of bins<input id="rot-bin-count" type="number" min="2" max="100" step="1" value="16"></label>
+                <button class="btn btn-primary" id="rot-recompute">Update profile</button>
+              </div>
+              <span id="rot-bin-status" role="status"></span>
+              <div id="rot-bin-details"></div>
+            </div>
+
             <div class="empty" id="rot-empty">
               <div class="empty-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 12a9 9 0 11-3-6.7"/><path d="M21 4v4h-4"/></svg></div>
               <h2 id="rot-empty-title">No rotation analysis yet</h2>
@@ -1063,6 +1090,7 @@ async function saveFilteredFile(source) {
       $('#run-error').classList.add('show');
       return;
     }
+    state.rotationData = null;
     state.resultCsv = obj.csv;
     state.summary = obj.summary;
     state.parsed2D = null;
@@ -1091,6 +1119,7 @@ async function loadCached() {
     const r = await fetch(api(`/load_filtered?id=${encodeURIComponent(state.clusterId)}&variant=${encodeURIComponent(state.catalogVariant || 'dr3')}`), { cache: 'no-store' });
     const obj = await r.json();
     if (obj.error) throw new Error(obj.error);
+    state.rotationData = null;
     state.resultCsv = obj.csv;
     state.summary = obj.summary;
     state.csvName = obj.filename || state.csvName;
@@ -1643,6 +1672,29 @@ async function downloadPlotsPng(plots) {
   }
 }
 
+async function recomputeRotation() {
+  const count = Number($('#rot-bin-count').value);
+  const status = $('#rot-bin-status');
+  if (!Number.isInteger(count) || count < 2 || count > 100) {
+    status.textContent = 'Choose an integer from 2 to 100.'; return;
+  }
+  const cid = state.clusterId, variant = state.catalogVariant || 'dr3';
+  const mode = $('#rot-bin-mode').value;
+  const button = $('#rot-recompute'); button.disabled = true;
+  status.textContent = 'Updating profile and uncertainties…';
+  try {
+    const response = await fetch(api(`/rotation?id=${encodeURIComponent(cid)}&variant=${variant}&bin_mode=${mode}&nbins=${count}`));
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || 'Calculation failed');
+    if (state.clusterId !== cid || (state.catalogVariant || 'dr3') !== variant) return;
+    data._cid = cid; state.rotationData = data;
+    $('#rot-empty').style.display = 'none'; $('#rot-content').style.display = 'block';
+    renderRotation(data);
+    status.textContent = 'Profile updated.';
+  } catch (e) { status.textContent = e.message; }
+  finally { button.disabled = false; }
+}
+
 // ---------------------------------------------------------------- rotation view
 const AX = t => ({ title: t, color: '#93a0b8', gridcolor: '#1c2540', zeroline: false });
 const DARKL = extra => Object.assign({ paper_bgcolor: '#000', plot_bgcolor: '#000',
@@ -1652,6 +1704,9 @@ const DARKL = extra => Object.assign({ paper_bgcolor: '#000', plot_bgcolor: '#00
 async function showRotation() {
   const empty = $('#rot-empty'), content = $('#rot-content');
   if (!state.clusterId) { empty.style.display = 'block'; content.style.display = 'none'; return; }
+  if ((!state.rotationData || state.rotationData._cid !== state.clusterId) && state.catalogVariant === 'dr3_fpr') {
+    await recomputeRotation(); return;
+  }
   if (!state.rotationData || state.rotationData._cid !== state.clusterId) {
     const cid = state.clusterId;   // pin: user may switch clusters mid-fetch
     try {
@@ -1673,9 +1728,31 @@ async function showRotation() {
 }
 
 function renderRotation(d) {
+  const binfo = d.binning;
+  $('#rot-bin-details').innerHTML = binfo ?
+    `<span class="bin-chip">${binfo.mode === 'equal_number' ? 'Equal number' : 'Equal radius width'}</span>
+     <span class="bin-chip">${binfo.count} bins</span>
+     <span class="bin-chip">${d.n_members.toLocaleString()} stars</span>
+     <p class="bin-note"><span class="math-inline">V/σ = |V<sub>rot</sub>|<sub>peak</sub> / σ<sub>0</sub></span> · Peak rotation divided by central dispersion.</p>` +
+    (binfo.sparse_bins ? `<p class="bin-note">${binfo.sparse_bins} sparse bins (fewer than 30 stars); interpret their estimates with care.</p>` : '') :
+    '<span class="bin-chip">Saved profile</span>';
+
   const s = d.stats, b = d.bins;
+  // Legacy cached profiles clipped unresolved dispersions to zero.
+  b.sigma = b.sigma.map(v => v != null && v > 0 ? v : null);
+  const unresolved = b.sigma.filter(v => v == null).length;
+  const note = document.createElement('p');
+  note.className = 'bin-note';
+  note.textContent = d.diagnostics
+    ? `Kinematics: ${d.diagnostics.kinematic_catalog}. ${Object.entries(d.diagnostics.origin_counts || {}).map(([k,v]) => `${k === "gaia_fpr" ? "FPR" : "DR3"}: ${v.toLocaleString()}`).join(" · ")}. ${unresolved} unresolved bins shown as gaps. Exploratory estimate using per-star errors; membership selection can bias dispersion.`
+    : 'Saved profile: unresolved dispersion values are hidden. Recalculate to apply the current quality checks.';
+  $('#rot-bin-details').appendChild(note);
+  if (s.quality !== 'good' || !(s.sigma0_kms > 0)) {
+    s.vsig_peak = null; s.vsig_peak_err = null;
+    note.textContent += ' Headline V/σ is unavailable because the measurement fails the quality checks.';
+  }
   const f = (x, n = 2) => (x == null ? '—' : Number(x).toFixed(n));
-  $('#rot-vsig').textContent = `${f(s.vsig_peak, 3)} ± ${f(s.vsig_peak_err, 3)}`;
+  $('#rot-vsig').textContent = s.vsig_peak == null ? 'Unavailable' : `${f(s.vsig_peak, 3)} ± ${f(s.vsig_peak_err, 3)}`;
   $('#rot-vpeak').textContent = `${f(s.v_peak_kms)} ± ${f(s.v_peak_err_kms)}`;
   $('#rot-sigma0').textContent = f(s.sigma0_kms);
   $('#rot-counter').textContent = s.counter_rotation ? 'YES' : 'no';
@@ -2683,6 +2760,7 @@ function initEvents() {
   });
 
   // PNG downloads for rotation view + the two study screens
+  $('#rot-recompute').addEventListener('click', recomputeRotation);
   $('#rot-download').addEventListener('click', () => {
     const c = state.clusterId || 'cluster';
     downloadPlotsPng([

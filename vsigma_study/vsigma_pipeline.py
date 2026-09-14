@@ -35,8 +35,8 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-DATA = Path(r"C:\Users\hoche\OneDrive\Desktop\Cluster Analysis HTML\data")
-OUT = Path(r"C:\Users\hoche\OneDrive\Desktop\Cluster Analysis HTML\vsigma_study")
+DATA = Path(__file__).resolve().parents[1] / "data"
+OUT = Path(__file__).resolve().parent
 K = 4.74047                      # (mas/yr)*(kpc) -> km/s
 P_CUT = 0.90
 N_BOOT = 200
@@ -104,16 +104,18 @@ def jnum(x):
     return x if np.isfinite(x) else None
 
 
-def load_members(cid):
+def load_members(cid, catalog=None):
     """Returns (members, p_cut_used). Falling back to 0.5 means the
     membership model separated poorly -> sample flagged as contaminated."""
-    fp = DATA / cid / "filtered.csv"
+    fp = Path(catalog) if catalog else DATA / cid / "filtered.csv"
     if not fp.exists():
         return None, None
-    df = pd.read_csv(fp)
+    df = pd.read_csv(fp, low_memory=False)
     for c in ["ra", "dec", "pmra", "pmdec", "pmra_error", "pmdec_error", "membership_prob"]:
         df[c] = pd.to_numeric(df[c], errors="coerce")
     df = df.dropna(subset=["ra", "dec", "pmra", "pmdec", "pmra_error", "pmdec_error"])
+    cols = ["ra", "dec", "pmra", "pmdec", "pmra_error", "pmdec_error"]
+    df = df[np.isfinite(df[cols]).all(axis=1) & (df["pmra_error"] > 0) & (df["pmdec_error"] > 0)]
     m = df[df["membership_prob"] >= P_CUT]
     cut = P_CUT
     if len(m) < 100:
@@ -127,15 +129,22 @@ def deconvolved_sigma(vx, vy, ex2):
     vx, vy: residual velocities (km/s); ex2: per-star mean err^2 (km/s)^2."""
     obs2 = 0.5 * (np.var(vx) + np.var(vy))
     true2 = obs2 - np.mean(ex2)
-    return np.sqrt(max(true2, 0.0)), obs2
+    return (np.sqrt(true2) if true2 > 0 else np.nan), obs2
 
 
-def analyze_cluster(cid, want_rv=True):
+def analyze_cluster(cid, want_rv=True, bin_mode="equal_number", nbins=None, catalog=None, save_figure=True):
+    if bin_mode not in ("equal_number", "equal_radius"):
+        raise ValueError("Unknown bin mode")
+    if nbins is not None and (not isinstance(nbins, int) or not 2 <= nbins <= 100):
+        raise ValueError("Bin count must be an integer from 2 to 100")
+    rng = np.random.default_rng(42)
     ra0, dec0, rc, rh, conc, rt, feh, dist, litrot, vlos = CLUSTERS[cid]
-    m, p_cut_used = load_members(cid)
+    m, p_cut_used = load_members(cid, catalog)
     if m is None or len(m) < 50:
         return None
     n = len(m)
+    if nbins is not None and nbins > n // 2:
+        raise ValueError(f"Choose at most {n // 2} bins for {n} usable stars")
     kd = K * dist                                     # (mas/yr) -> km/s
     pc_per_arcmin = dist * 1000 * np.pi / (180 * 60)
 
@@ -178,14 +187,28 @@ def analyze_cluster(cid, want_rv=True):
     v_rad = (x * vx + y * vy) / Rsafe
 
     # ---- radial bins (equal count) ----------------------------------
-    nbins = int(np.clip(n // 400, 4, 16))
-    order = np.argsort(R)
-    bin_idx = np.array_split(order, nbins)
-    edges = [R[b[0]] for b in bin_idx] + [R[order[-1]]]
+    nbins = nbins or int(np.clip(n // 400, 4, 16))
+    order = np.argsort(R, kind="stable")
+    if bin_mode == "equal_number":
+        bin_idx = np.array_split(order, nbins)
+        edges = [float(R.min())] + [float((R[a[-1]] + R[b[0]]) / 2)
+                 for a, b in zip(bin_idx[:-1], bin_idx[1:])] + [float(R.max())]
+    else:
+        edges = np.linspace(0, R.max(), nbins + 1)
+        labels = np.clip(np.searchsorted(edges, R, side="right") - 1, 0, nbins - 1)
+        bin_idx = [np.flatnonzero(labels == i) for i in range(nbins)]
+    # Resample original assignments, preserving equal-number ties and empty rings.
+    labels = np.empty(n, dtype=int)
+    for i, members in enumerate(bin_idx):
+        labels[members] = i
 
     prof = dict(r_mid=[], n=[], vrot=[], vrot_err=[], sig=[], sig_err=[],
                 vrad=[], vrad_err=[])
     for b in bin_idx:
+        if len(b) < 2:
+            for key in prof:
+                prof[key].append(len(b) if key == "n" else np.nan)
+            continue
         rb = R[b]
         prof["r_mid"].append(np.median(rb))
         prof["n"].append(len(b))
@@ -208,8 +231,8 @@ def analyze_cluster(cid, want_rv=True):
     # ---- headline stats ----------------------------------------------
     elig = prof["n"] >= min(200, max(30, n / 10))
     if not elig.any():
-        elig = np.ones(nbins, bool)
-    i_pk = int(np.argmax(np.abs(prof["vrot"]) * elig))
+        elig = prof["n"] >= 2
+    i_pk = int(np.nanargmax(np.where(elig, np.abs(prof["vrot"]), np.nan)))
     v_peak = abs(prof["vrot"][i_pk])
     r_peak = prof["r_mid"][i_pk]
 
@@ -249,7 +272,7 @@ def analyze_cluster(cid, want_rv=True):
     sig_in3, sig_out3 = np.median(prof["sig"][:third]), np.median(prof["sig"][-third:])
     err_io = np.hypot(np.median(prof["sig_err"][:third]), np.median(prof["sig_err"][-third:]))
     rising = bool(np.isfinite(err_io) and sig_out3 > sig_in3 + 2 * err_io)
-    if sigma0 <= 0:
+    if not np.isfinite(sigma0) or sigma0 <= 0:
         quality = "unmeasurable"
     elif p_cut_used < P_CUT or rising or dipole > 1.0:
         quality = "contaminated"
@@ -262,9 +285,9 @@ def analyze_cluster(cid, want_rv=True):
     boots = []
     edges_arr = np.array(edges)
     for _ in range(N_BOOT):
-        s = RNG.integers(0, n, n)
+        s = rng.integers(0, n, n)
         vt_b, vx_b, vy_b, e2_b, R_b = v_tan[s], vx[s], vy[s], err2[s], R[s]
-        which = np.clip(np.searchsorted(edges_arr, R_b, side="right") - 1, 0, nbins - 1)
+        which = labels[s]
         vb = np.full(nbins, np.nan)
         for i in range(nbins):
             sel = which == i
@@ -285,7 +308,8 @@ def analyze_cluster(cid, want_rv=True):
 
     # ---- rotation map (annular sectors) -------------------------------
     map_nr = min(nbins, 8)
-    r_edges = np.quantile(R, np.linspace(0, 1, map_nr + 1))
+    r_edges = (np.linspace(0, R.max(), map_nr + 1) if bin_mode == "equal_radius"
+               else np.quantile(R, np.linspace(0, 1, map_nr + 1)))
     t_edges = np.linspace(-np.pi, np.pi, 13)
     vmap = np.full((map_nr, 12), np.nan)
     ri = np.clip(np.searchsorted(r_edges, R, side="right") - 1, 0, map_nr - 1)
@@ -302,7 +326,18 @@ def analyze_cluster(cid, want_rv=True):
         cluster=cid, n_members=int(n), dist_kpc=dist, feh=feh, conc=conc,
         r_c_arcmin=rc, r_h_arcmin=rh, r_t_arcmin=rt, lit_rotation=litrot,
         vlos_lit=vlos, pm_sys=dict(pmra=jnum(pm0[0]), pmdec=jnum(pm0[1])),
+        diagnostics=dict(
+            estimator="moment subtraction; not a selection-corrected likelihood fit",
+            kinematic_catalog=("Gaia DR3 + FPR" if "catalog_origin" in m and (m["catalog_origin"] == "gaia_fpr").any() else "Gaia DR3"),
+            origin_counts=({str(k): int(v) for k, v in m["catalog_origin"].value_counts().items()}
+                           if "catalog_origin" in m else {"gaia_dr3": n}),
+            unresolved_bins=int(np.sum(~np.isfinite(prof["sig"]))),
+            warning="Exploratory estimate: per-star reported error variances are averaged within each bin. Membership selection can bias dispersion; FPR scores are not calibrated DR3 probabilities. Unresolved values are not zero.",
+        ),
+        binning=dict(mode=bin_mode, count=nbins, bootstrap_samples=N_BOOT,
+                     sparse_bins=int((prof["n"] < 30).sum()), map_rings=map_nr),
         bins=dict(
+            r_edges_arcmin=[jnum(v) for v in edges],
             r_mid_arcmin=[jnum(v) for v in prof["r_mid"]],
             r_mid_pc=[jnum(v * pc_per_arcmin) for v in prof["r_mid"]],
             n=[int(v) for v in prof["n"]],
@@ -319,8 +354,8 @@ def analyze_cluster(cid, want_rv=True):
                  v_tan_mean=[[jnum(v) for v in row] for row in vmap]),
         stats=dict(v_peak_kms=jnum(v_peak), v_peak_err_kms=jnum(v_peak_err),
                    r_peak_arcmin=jnum(r_peak), sigma0_kms=jnum(sigma0),
-                   vsig_peak=jnum(vsig_peak),
-                   vsig_peak_err=(jnum(vsig_err) if jnum(vsig_peak) is not None else None),
+                   vsig_peak=jnum(vsig_peak) if quality == "good" else None,
+                   vsig_peak_err=(jnum(vsig_err) if quality == "good" and jnum(vsig_peak) is not None else None),
                    median_err_vel_kms=jnum(med_err_vel),
                    sigma0_snr=jnum(snr_sigma),
                    p_cut_used=p_cut_used,
@@ -346,7 +381,8 @@ def analyze_cluster(cid, want_rv=True):
         res["axis3d"]["twist_significant"] = False
         res["axis3d"]["twist_note"] = "rotation not detected; twist is noise"
 
-    make_cluster_figure(cid, prof, r_edges, t_edges, vmap, res, rh)
+    if save_figure:
+        make_cluster_figure(cid, prof, r_edges, t_edges, vmap, res, rh)
     return res
 
 

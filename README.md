@@ -458,3 +458,13 @@ Gaia data are distributed under the **CC BY-NC 3.0 IGO license**. Please refer t
 For questions, suggestions, or inquiries regarding this project, please contact:
 
 **Discord:** `zz.oao`
+
+## Interactive V/sigma binning
+
+In the cluster **Rotation** view, choose **Equal number** (approximately the same number of stars per ring) or **Equal radius width** (uniform radial intervals from zero to the maximum member radius). Enter 2–100 bins and click **Update profile**.
+
+The server recalculates the selected catalog's velocity profile, peak V/σ, and 200 bootstrap samples without overwriting saved studies or plots. A compact summary shows the applied method, bin count, and total stars; the profiles show velocities and dispersions with errors. Rings with fewer than two stars have no estimate; rings with fewer than 30 stars are flagged as sparse. More bins can increase noise and alter the measured peak. The central dispersion aperture is independent of the bin count. The rotation map uses at most eight rings; the 3D axis is not recomputed. Cross-cluster comparisons continue to use the saved baseline results.
+
+### Dispersion quality and FPR
+
+Interactive kinematics include FPR when the combined catalog is selected. Each bin subtracts the mean of the individual reported velocity-error variances, not the square of a catalogue-wide average error. The displayed source counts reflect stars passing the membership and finite, positive uncertainty checks. FPR proper-motion membership scores are not calibrated DR3 probabilities and need a separate selection-aware analysis. Nonpositive error-subtracted variance is reported as unavailable and plotted as a gap, never a measured zero. The headline V/σ is withheld when the existing measurement-quality checks fail. The estimator remains moment subtraction and is sensitive to membership selection; these changes do not constitute a selection-corrected likelihood fit or scientific validation. Existing saved cross-cluster results are not regenerated automatically.
