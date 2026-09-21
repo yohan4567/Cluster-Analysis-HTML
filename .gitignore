@@ -216,3 +216,54 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Additional project cleanup rules
+# Python bytecode and interpreter caches
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Local Python environments
+.venv/
+venv/
+env/
+
+# Test, lint, and coverage artifacts
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.hypothesis/
+.tox/
+.nox/
+.coverage
+.coverage.*
+htmlcov/
+
+# Python packaging outputs
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Runtime logs and temporary files
+*.log
+*.tmp
+*.swp
+*.swo
+*~
+.ipynb_checkpoints/
+
+# Local secrets and machine-specific settings
+.env
+.env.*
+!.env.example
+!.env.sample
+.idea/
+
+# Operating system metadata
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Keep scientific catalogs, plots, and analysis results versioned.
+# Download caches are not blanket-ignored: some are project inputs.
