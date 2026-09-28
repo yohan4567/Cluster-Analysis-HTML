@@ -459,12 +459,22 @@ For questions, suggestions, or inquiries regarding this project, please contact:
 
 **Discord:** `zz.oao`
 
-## Interactive V/sigma binning
+## PM rotation and dispersion (MCMC)
 
-In the cluster **Rotation** view, choose **Equal number** (approximately the same number of stars per ring) or **Equal radius width** (uniform radial intervals from zero to the maximum member radius). Enter 2–100 bins and click **Update profile**.
+The Rotation view defaults to **Auto (per cluster)**. Initial equal-count rings are merged using reported error information and a radial-width cap. The applied count is displayed. These are provisional, reproducible settings, not an empirically optimal bin count. Manual **Equal number** and **Equal radius width** modes remain available (2–100 bins).
 
-The server recalculates the selected catalog's velocity profile, peak V/σ, and 200 bootstrap samples without overwriting saved studies or plots. A compact summary shows the applied method, bin count, and total stars; the profiles show velocities and dispersions with errors. Rings with fewer than two stars have no estimate; rings with fewer than 30 stars are flagged as sparse. More bins can increase noise and alter the measured peak. The central dispersion aperture is independent of the bin count. The rotation map uses at most eight rings; the 3D axis is not recomputed. Cross-cluster comparisons continue to use the saved baseline results.
+The new estimator fits mean radial and signed tangential motion and their intrinsic dispersions together, using each star's PM error covariance. Geometry uses spherical local bases and a projected bulk space velocity, including perspective contraction/expansion. Fits run in mas/yr with `emcee`; plots convert to km/s and show radius in units of the catalog projected half-light radius.
 
-### Dispersion quality and FPR
+The displayed local ratio is `abs(Vt) / sqrt((sigma_R² + sigma_t²)/2)`, with posterior intervals. It is **not** Bianchini's peak-PM/central-LOS statistic. Central/aperture headline ratios and the old 3D fit are not produced by the new model. Existing cross-cluster studies remain explicitly labeled legacy; interactive requests do not overwrite them or catalogs.
 
-Interactive kinematics include FPR when the combined catalog is selected. Each bin subtracts the mean of the individual reported velocity-error variances, not the square of a catalogue-wide average error. The displayed source counts reflect stars passing the membership and finite, positive uncertainty checks. FPR proper-motion membership scores are not calibrated DR3 probabilities and need a separate selection-aware analysis. Nonpositive error-subtracted variance is reported as unavailable and plotted as a gap, never a measured zero. The headline V/σ is withheld when the existing measurement-quality checks fail. The estimator remains moment subtraction and is sensitive to membership selection; these changes do not constitute a selection-corrected likelihood fit or scientific validation. Existing saved cross-cluster results are not regenerated automatically.
+Allow several minutes for a first calculation. If convergence gaps remain, enable **Longer sampling** and update the profile (up to 8000 instead of 4000 steps; this does not guarantee resolution). Results are cached under ignored `vsigma_study/.kinematics_cache/`, keyed by model version, catalog path/size/modification time, parameters and bin settings. Changed input data invalidates this cache. Restart `server.py` after updating the code. Install dependencies with `python -m pip install -r requirements.txt`.
+
+### Scientific limitations
+
+DR3 and FPR are included when selected, with finite positive uncertainties. Valid reported PM correlation is used; missing correlation in legacy CSVs uses a **diagonal input covariance approximation**, whose star count is shown. Invalid nonmissing correlations are excluded. Future DR3 downloads retain the correlation column; existing CSVs/caches are not silently rewritten. No lower-membership fallback is applied.
+
+The fit is **conditional on the selected sample and reported errors**: selection truncation, star-to-star spatial systematics, distance and bulk-motion uncertainty are not marginalized. FPR membership scores are not calibrated DR3 probabilities. A likelihood cannot undo biased selection.
+
+Unconverged fits, error-model conflicts and unresolved dispersions are distinguished. Unresolved, converged, model-compatible bins show a conditional 95% upper limit; no ordinary ratio is shown there. Error bars are 16th–84th posterior percentiles, not observational-error bars. Rotation flags are conditional posterior-sign checks, not systematics-corrected detections.
+
+See [the method specification](vsigma_study/METHODS_MCMC.md) for priors, bin rules and validation. Run scientific regression checks with `python -m unittest vsigma_study.test_pm_kinematics -v`.

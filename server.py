@@ -508,33 +508,26 @@ class Handler(http.server.BaseHTTPRequestHandler):
 
         if path == "/rotation":
             cid = sanitize_id((qs.get("id") or [""])[0])
-            if "bin_mode" in qs or "nbins" in qs:
-                try:
-                    from vsigma_study.vsigma_pipeline import analyze_cluster, CLUSTERS
-                    if cid not in CLUSTERS:
-                        raise ValueError("Unknown cluster")
-                    mode = qs.get("bin_mode", ["equal_number"])[0]
-                    count = int(qs.get("nbins", ["16"])[0])
-                    variant = qs.get("variant", ["dr3"])[0]
-                    if variant not in ("dr3", "dr3_fpr"):
-                        raise ValueError("Unknown catalog")
-                    result = analyze_cluster(cid, want_rv=False, bin_mode=mode, nbins=count,
-                                             catalog=catalog_path(cid, variant), save_figure=False)
-                    if result is None:
-                        raise ValueError("At least 50 usable members are required")
-                    result["catalog_variant"] = variant
-                    self._send_json(result)
-                except ValueError as e:
-                    self._send_json({"error": str(e)}, 400)
-                except Exception as e:
-                    self._send_json({"error": str(e)}, 500)
-                return
-
-            fp = os.path.join(cluster_dir(cid), "rotation.json")
-            if not cid or not os.path.exists(fp):
-                self._send_json({"error": "no rotation analysis for this cluster yet"}, 404)
-                return
-            self._send(200, open(fp, "r", encoding="utf-8").read())
+            try:
+                from vsigma_study.vsigma_pipeline import analyze_cluster, CLUSTERS
+                if cid not in CLUSTERS:
+                    raise ValueError("Unknown cluster")
+                mode = qs.get("bin_mode", ["auto"])[0]
+                count = None if mode == "auto" else int(qs.get("nbins", ["16"])[0])
+                max_steps = int(qs.get("mcmc_steps", ["4000"])[0])
+                variant = qs.get("variant", ["dr3"])[0]
+                if variant not in ("dr3", "dr3_fpr"):
+                    raise ValueError("Unknown catalog")
+                result = analyze_cluster(cid, want_rv=False, bin_mode=mode, nbins=count,
+                                         catalog=catalog_path(cid, variant), save_figure=False, max_steps=max_steps)
+                if result is None:
+                    raise ValueError("At least 50 usable members are required")
+                result["catalog_variant"] = variant
+                self._send_json(result)
+            except ValueError as e:
+                self._send_json({"error": str(e)}, 400)
+            except Exception as e:
+                self._send_json({"error": str(e)}, 500)
             return
 
         if path == "/vsigma_summary":

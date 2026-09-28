@@ -577,10 +577,11 @@ input[type=checkbox]{accent-color:var(--cool); width:15px; height:15px}
             <div class="rotation-settings">
               <h3 class="rotation-settings-title">Radial binning</h3>
               <div class="rotation-controls">
-                <label for="rot-bin-mode">Method<select id="rot-bin-mode"><option value="equal_number">Equal number</option><option value="equal_radius">Equal radius width</option></select></label>
-                <label for="rot-bin-count">Number of bins<input id="rot-bin-count" type="number" min="2" max="100" step="1" value="16"></label>
+                <label for="rot-bin-mode">Method<select id="rot-bin-mode"><option value="auto" selected>Auto (per cluster)</option><option value="equal_number">Equal number</option><option value="equal_radius">Equal radius width</option></select></label>
+                <label for="rot-bin-count">Number of bins<input id="rot-bin-count" type="number" min="2" max="100" step="1" value="16" disabled></label>
                 <button class="btn btn-primary" id="rot-recompute">Update profile</button>
               </div>
+              <label style="display:flex;gap:8px;align-items:center;font-size:12px;margin-top:10px"><input id="rot-long-sampling" type="checkbox"> Longer sampling for unconverged bins (slower)</label>
               <span id="rot-bin-status" role="status"></span>
               <div id="rot-bin-details"></div>
             </div>
@@ -595,9 +596,9 @@ input[type=checkbox]{accent-color:var(--cool); width:15px; height:15px}
                 <button class="btn btn-ghost plot-savebtn" id="rot-download">Download PNGs</button>
               </div>
               <div class="stats" style="grid-template-columns:repeat(6,1fr); margin-bottom:14px">
-                <div class="stat hl"><div class="sv" id="rot-vsig">—</div><div class="sk">V/&sigma; (peak)</div></div>
+                <div class="stat hl"><div class="sv" id="rot-vsig">—</div><div class="sk">Resolved dispersion bins</div></div>
                 <div class="stat"><div class="sv" id="rot-vpeak">—</div><div class="sk">V rot peak (km/s)</div></div>
-                <div class="stat"><div class="sv" id="rot-sigma0">—</div><div class="sk">&sigma;&#8320; (km/s)</div></div>
+                <div class="stat"><div class="sv" id="rot-sigma0">—</div><div class="sk">Estimator</div></div>
                 <div class="stat"><div class="sv" id="rot-counter">—</div><div class="sk">Counter-rotation</div></div>
                 <div class="stat"><div class="sv" id="rot-axis">—</div><div class="sk">3D axis (incl / twist)</div></div>
                 <div class="stat"><div class="sv" id="rot-lit">—</div><div class="sk">Literature status</div></div>
@@ -618,7 +619,8 @@ input[type=checkbox]{accent-color:var(--cool); width:15px; height:15px}
               <h2>No cross-cluster results yet</h2>
               <p>Run <code style="font-family:var(--mono); color:var(--cool-2)">vsigma_study/vsigma_pipeline.py</code> to generate the rankings.</p>
             </div>
-            <div id="rank-content" style="display:none">
+            <p class="plot-note">Legacy ranking: saved results use the earlier estimator.</p>
+              <div id="rank-content" style="display:none">
               <div class="plot-toolbar">
                 <span style="font-size:12.5px; color:var(--ink-dim)">Where <b id="rank-current" style="color:var(--warm-2)">this cluster</b> sits in the full sample &mdash; its bar is highlighted.</span>
                 <button class="btn btn-ghost plot-savebtn" id="rank-download" style="margin-left:auto">Download PNGs</button>
@@ -648,6 +650,7 @@ input[type=checkbox]{accent-color:var(--cool); width:15px; height:15px}
           <h2>No V/&sigma; summary yet</h2>
           <p>Run <code style="font-family:var(--mono); color:var(--cool-2)">vsigma_study/vsigma_pipeline.py</code> to generate the cross-cluster study.</p>
         </div>
+        <p class="plot-note">Legacy study: these saved peak/central ratios use the earlier estimator. They are not comparable to the new PM MCMC profiles.</p>
         <div id="vsig-content" style="display:none">
           <div class="plot-toolbar">
             <div class="plot-slider">
@@ -1675,24 +1678,29 @@ async function downloadPlotsPng(plots) {
 async function recomputeRotation() {
   const count = Number($('#rot-bin-count').value);
   const status = $('#rot-bin-status');
-  if (!Number.isInteger(count) || count < 2 || count > 100) {
+  if ($('#rot-bin-mode').value !== 'auto' && (!Number.isInteger(count) || count < 2 || count > 100)) {
     status.textContent = 'Choose an integer from 2 to 100.'; return;
   }
   const cid = state.clusterId, variant = state.catalogVariant || 'dr3';
   const mode = $('#rot-bin-mode').value;
+  const requestId = (state.rotationRequestId || 0) + 1;
+  state.rotationRequestId = requestId;
   const button = $('#rot-recompute'); button.disabled = true;
-  status.textContent = 'Updating profile and uncertainties…';
+  status.textContent = 'Fitting rotation and dispersion… First calculation may take several minutes; repeated requests use the cache.';
   try {
-    const response = await fetch(api(`/rotation?id=${encodeURIComponent(cid)}&variant=${variant}&bin_mode=${mode}&nbins=${count}`));
+    const steps = $('#rot-long-sampling').checked ? 8000 : 4000;
+    const response = await fetch(api(`/rotation?id=${encodeURIComponent(cid)}&variant=${variant}&bin_mode=${mode}&nbins=${count}&mcmc_steps=${steps}`));
     const data = await response.json();
     if (!response.ok) throw new Error(data.error || 'Calculation failed');
-    if (state.clusterId !== cid || (state.catalogVariant || 'dr3') !== variant) return;
-    data._cid = cid; state.rotationData = data;
+    if (state.rotationRequestId !== requestId || state.clusterId !== cid || (state.catalogVariant || 'dr3') !== variant) return;
+    data._cid = cid; data._variant = variant; state.rotationData = data;
     $('#rot-empty').style.display = 'none'; $('#rot-content').style.display = 'block';
     renderRotation(data);
     status.textContent = 'Profile updated.';
-  } catch (e) { status.textContent = e.message; }
-  finally { button.disabled = false; }
+  } catch (e) {
+    if (state.rotationRequestId === requestId && state.clusterId === cid) status.textContent = e.message;
+  }
+  finally { if (state.rotationRequestId === requestId) button.disabled = false; }
 }
 
 // ---------------------------------------------------------------- rotation view
@@ -1704,103 +1712,76 @@ const DARKL = extra => Object.assign({ paper_bgcolor: '#000', plot_bgcolor: '#00
 async function showRotation() {
   const empty = $('#rot-empty'), content = $('#rot-content');
   if (!state.clusterId) { empty.style.display = 'block'; content.style.display = 'none'; return; }
-  if ((!state.rotationData || state.rotationData._cid !== state.clusterId) && state.catalogVariant === 'dr3_fpr') {
-    await recomputeRotation(); return;
-  }
-  if (!state.rotationData || state.rotationData._cid !== state.clusterId) {
-    const cid = state.clusterId;   // pin: user may switch clusters mid-fetch
-    try {
-      const r = await fetch(api(`/rotation?id=${encodeURIComponent(cid)}`), { cache: 'no-store' });
-      if (!r.ok) throw new Error('none');
-      const data = await r.json();
-      if (state.clusterId !== cid) return;   // stale response — drop it
-      data._cid = cid;
-      state.rotationData = data;
-    } catch (e) {
-      if (state.clusterId !== cid) return;
-      state.rotationData = null;
-      empty.style.display = 'block'; content.style.display = 'none';
-      return;
-    }
+  if (!state.rotationData || state.rotationData._cid !== state.clusterId ||
+      state.rotationData._variant !== (state.catalogVariant || 'dr3') || !state.rotationData.model_version) {
+    $('#rot-bin-mode').value = 'auto';
+    $('#rot-bin-count').disabled = true;
+    content.style.display = 'none';
+    await recomputeRotation();
+    return;
   }
   empty.style.display = 'none'; content.style.display = 'block';
   renderRotation(state.rotationData);
 }
 
 function renderRotation(d) {
-  const binfo = d.binning;
-  $('#rot-bin-details').innerHTML = binfo ?
-    `<span class="bin-chip">${binfo.mode === 'equal_number' ? 'Equal number' : 'Equal radius width'}</span>
+  const binfo = d.binning, b = d.bins, s = d.stats;
+  const resolved = b.status.filter(value => value === 'resolved').length;
+  $('#rot-bin-count').value = binfo.count;
+  $('#rot-bin-mode').value = binfo.mode;
+  $('#rot-bin-count').disabled = binfo.mode === 'auto';
+  $('#rot-bin-details').innerHTML =
+    `<span class="bin-chip">${binfo.mode === 'auto' ? 'Auto · adaptive' : binfo.mode === 'equal_number' ? 'Equal number' : 'Equal radius'}</span>
      <span class="bin-chip">${binfo.count} bins</span>
      <span class="bin-chip">${d.n_members.toLocaleString()} stars</span>
-     <p class="bin-note"><span class="math-inline">V/σ = |V<sub>rot</sub>|<sub>peak</sub> / σ<sub>0</sub></span> · Peak rotation divided by central dispersion.</p>` +
-    (binfo.sparse_bins ? `<p class="bin-note">${binfo.sparse_bins} sparse bins (fewer than 30 stars); interpret their estimates with care.</p>` : '') :
-    '<span class="bin-chip">Saved profile</span>';
-
-  const s = d.stats, b = d.bins;
-  // Legacy cached profiles clipped unresolved dispersions to zero.
-  b.sigma = b.sigma.map(v => v != null && v > 0 ? v : null);
-  const unresolved = b.sigma.filter(v => v == null).length;
-  const note = document.createElement('p');
-  note.className = 'bin-note';
-  note.textContent = d.diagnostics
-    ? `Kinematics: ${d.diagnostics.kinematic_catalog}. ${Object.entries(d.diagnostics.origin_counts || {}).map(([k,v]) => `${k === "gaia_fpr" ? "FPR" : "DR3"}: ${v.toLocaleString()}`).join(" · ")}. ${unresolved} unresolved bins shown as gaps. Exploratory estimate using per-star errors; membership selection can bias dispersion.`
-    : 'Saved profile: unresolved dispersion values are hidden. Recalculate to apply the current quality checks.';
+     <p class="bin-note">PM V/σ = |Vt| / √[(σR² + σt²)/2]. Intervals contain 68% posterior probability. This is not peak rotation / central dispersion.</p>`;
+  const note = document.createElement('p'); note.className = 'bin-note';
+  const counts = b.status.reduce((out, key) => { out[key] = (out[key] || 0) + 1; return out; }, {});
+  note.textContent = `${d.diagnostics.kinematic_catalog}: ` +
+    Object.entries(d.diagnostics.origin_counts).map(([k,v]) => `${k === 'gaia_fpr' ? 'FPR' : 'DR3'} ${v.toLocaleString()}`).join(' · ') +
+    `. ${d.diagnostics.diagonal_covariance_stars} stars use approximate covariance (missing PM correlation). ` + Object.entries(counts).map(([k,v]) => `${v} ${k.replaceAll('_', ' ')}`).join(' · ') + '. Gaps are not zero.';
   $('#rot-bin-details').appendChild(note);
-  if (s.quality !== 'good' || !(s.sigma0_kms > 0)) {
-    s.vsig_peak = null; s.vsig_peak_err = null;
-    note.textContent += ' Headline V/σ is unavailable because the measurement fails the quality checks.';
-  }
-  const f = (x, n = 2) => (x == null ? '—' : Number(x).toFixed(n));
-  $('#rot-vsig').textContent = s.vsig_peak == null ? 'Unavailable' : `${f(s.vsig_peak, 3)} ± ${f(s.vsig_peak_err, 3)}`;
+  const details = document.createElement('details'); details.className = 'bin-note';
+  const summary = document.createElement('summary'); summary.textContent = 'Method and limitations';
+  details.appendChild(summary);
+  const explanation = document.createElement('p');
+  explanation.textContent = binfo.rule + ' ' + d.diagnostics.warning +
+    ` ${d.diagnostics.rejected_covariance} selected stars excluded for invalid covariance or coordinates. ` +
+    'The central/aperture headline is not estimated. Legacy cross-cluster study pages contain legacy moment-based results and are not comparable to this profile.';
+  details.appendChild(explanation); $('#rot-bin-details').appendChild(details);
+  const f = (v, n=2) => v == null ? '—' : Number(v).toFixed(n);
+  $('#rot-vsig').textContent = `${resolved} / ${binfo.count}`;
   $('#rot-vpeak').textContent = `${f(s.v_peak_kms)} ± ${f(s.v_peak_err_kms)}`;
-  $('#rot-sigma0').textContent = f(s.sigma0_kms);
-  $('#rot-counter').textContent = s.counter_rotation ? 'YES' : 'no';
-  const g = (d.axis3d && d.axis3d.available) ? d.axis3d : null;
-  $('#rot-axis').textContent = g
-    ? `${g.global && g.global.incl_deg != null ? f(g.global.incl_deg, 0) + '°' : '—'} / ${g.twist_deg != null ? f(g.twist_deg, 0) + '°' : '—'}`
-    : '—';
+  $('#rot-sigma0').textContent = 'PM MCMC';
+  $('#rot-counter').textContent = s.counter_rotation ? 'Candidate' : 'Not established';
+  $('#rot-axis').textContent = '—';
   $('#rot-lit').textContent = (d.lit_rotation || '—').replace(' / unclear', '');
   $('#rot-lit').style.fontSize = '12px';
-
-  const r = b.r_mid_arcmin;
-  // plotted as |μ_t| in mas/yr (literature convention): |⟨v_tan⟩| / (4.74 · d_kpc);
-  // the sign of ⟨v_tan⟩ only encodes spin direction and is shown in the rotation map
-  const kdRot = 4.74047 * d.dist_kpc;
-  Plotly.react('plot-rotcurve', [
-    { x: r, y: b.v_rot.map(v => Math.abs(v) / kdRot),
-      error_y: { array: b.v_rot_err.map(e => e / kdRot), color: '#6ea8ff' },
-      mode: 'lines+markers', line: { color: '#6ea8ff' }, marker: { size: 5 } },
-    { x: [r[0], r[r.length - 1]], y: [0, 0], mode: 'lines',
-      line: { color: '#5f6b86', width: 1, dash: 'dot' } }
-  ], DARKL({ title: { text: 'Rotation profile  |μ_t|(R)', font: { size: 13 } },
-             xaxis: AX('R (arcmin)'), yaxis: AX('|μ_t| (mas/yr)') }),
-  { displaylogo: false, responsive: true });
+  const g = null;
+  const r = b.r_over_rh;
+  const errors = key => ({type: 'data', symmetric: false,
+    array: b[key].map((v,i) => v == null ? null : b[key+'_hi'][i]-v),
+    arrayminus: b[key].map((v,i) => v == null ? null : v-b[key+'_lo'][i])});
+  const trace = (key, color, name) => ({x:r, y:b[key], name, error_y: errors(key),
+    connectgaps:false, mode:'lines+markers', line:{color}, marker:{size:5},
+    text:b.status.map((v,i) => v + (b.rotation_detected[i] ? ' · rotation sign established (conditional)' : ' · rotation sign not established')), hovertemplate:'R/Rh=%{x:.2f}<br>%{y:.3f}<br>%{text}<extra>%{fullData.name}</extra>'});
+  Plotly.react('plot-rotcurve', [trace('v_rot', '#6ea8ff', 'Vt')],
+    DARKL({title:{text:'Signed rotation profile', font:{size:13}}, xaxis:AX('R / Rh'), yaxis:AX('Vt (km/s)')}),
+    {displaylogo:false, responsive:true});
   ensureSaveBtn('plot-rotcurve', `${d.cluster}_rotation_profile`);
-
-  Plotly.react('plot-rotsigma', [
-    { x: r, y: b.sigma, error_y: { array: b.sigma_err, color: '#7fd6a6' },
-      mode: 'lines+markers', line: { color: '#7fd6a6' }, marker: { size: 5 } }
-  ], DARKL({ title: { text: 'Dispersion profile σ(R), error-deconvolved', font: { size: 13 } },
-             xaxis: AX('R (arcmin)'), yaxis: AX('σ (km/s)') }),
-  { displaylogo: false, responsive: true });
+  Plotly.react('plot-rotsigma', [trace('sigma_r','#7fd6a6','σR'), trace('sigma_t','#c2a0ff','σt'),
+    {x:r, y:b.sigma_upper95, name:'σPM 95% upper limit', mode:'markers', marker:{symbol:'triangle-down-open',color:'#ffc890',size:9}}],
+    DARKL({showlegend:true, legend:{orientation:'h',y:1.14}, title:{text:'Intrinsic PM dispersion',font:{size:13}},
+      xaxis:AX('R / Rh'), yaxis:AX('σ (km/s)')}), {displaylogo:false,responsive:true});
   ensureSaveBtn('plot-rotsigma', `${d.cluster}_dispersion_profile`);
-
-  const vs = b.v_rot.map((v, i) => (b.sigma[i] > 0 ? Math.abs(v) / b.sigma[i] : null));
-  const vse = vs.map((v, i) => v == null ? null
-    : v * Math.sqrt((b.v_rot_err[i] / Math.max(Math.abs(b.v_rot[i]), 1e-9)) ** 2
-                  + (b.sigma_err[i] / b.sigma[i]) ** 2));
-  Plotly.react('plot-rotvsig', [
-    { x: r, y: vs, error_y: { array: vse, color: '#ffc890' },
-      mode: 'lines+markers', line: { color: '#ffc890' }, marker: { size: 5 } }
-  ], DARKL({ title: { text: 'V/σ profile', font: { size: 13 } },
-             xaxis: AX('R (arcmin)'), yaxis: AX('|V_rot| / σ') }),
-  { displaylogo: false, responsive: true });
+  Plotly.react('plot-rotvsig', [trace('ratio','#ffc890','PM |Vt| / σ1D')],
+    DARKL({title:{text:'Local PM V/σ · conditional estimate',font:{size:13}},xaxis:AX('R / Rh'),yaxis:AX('|Vt| / σPM,1D')}),
+    {displaylogo:false,responsive:true});
   ensureSaveBtn('plot-rotvsig', `${d.cluster}_vsigma_profile`);
 
   // rotation map: one barpolar ring per radial bin, colored by mean v_tan
   const M = d.map, traces = [];
-  let vmax = 0;
+  let vmax = 1e-6;
   M.v_tan_mean.forEach(row => row.forEach(v => { if (v != null) vmax = Math.max(vmax, Math.abs(v)); }));
   const thetaC = [], w = [];
   for (let j = 0; j < M.theta_edges_deg.length - 1; j++) {
@@ -1830,7 +1811,7 @@ function renderRotation(d) {
     `${d.n_members.toLocaleString()} members · quality: ${s.quality || '—'} · rotation ${s.rotation_detected ? 'DETECTED' : 'not detected'}` +
     (s.rotation_detection_p != null ? ` (p = ${s.rotation_detection_p.toExponential(1)})` : '') +
     ` · systemic PM (${d.pm_sys.pmra.toFixed(3)}, ${d.pm_sys.pmdec.toFixed(3)}) mas/yr · ` +
-    `sinusoid diagnostic ${s.dipole_diag_kms.toFixed(2)} km/s (≈0 is good) · ${s.rotation_sense}` +
+    `${s.rotation_sense} · Rotation flags are conditional on the model; spatial systematics are not included.` +
     (g && g.n_rv ? ` · 3D axis from ${g.n_rv} Gaia RV stars` : '');
 }
 
@@ -2761,6 +2742,7 @@ function initEvents() {
 
   // PNG downloads for rotation view + the two study screens
   $('#rot-recompute').addEventListener('click', recomputeRotation);
+  $('#rot-bin-mode').addEventListener('change', () => { $('#rot-bin-count').disabled = $('#rot-bin-mode').value === 'auto'; if (!$('#rot-bin-count').disabled && Number($('#rot-bin-count').value) < 2) $('#rot-bin-count').value = 2; });
   $('#rot-download').addEventListener('click', () => {
     const c = state.clusterId || 'cluster';
     downloadPlotsPng([

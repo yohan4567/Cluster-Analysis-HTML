@@ -267,3 +267,6 @@ Desktop.ini
 
 # Keep scientific catalogs, plots, and analysis results versioned.
 # Download caches are not blanket-ignored: some are project inputs.
+
+# Versioned MCMC results (recomputed from scientific catalogs)
+vsigma_study/.kinematics_cache/

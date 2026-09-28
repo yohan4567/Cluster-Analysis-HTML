@@ -1,3 +1,5 @@
+> Historical method: this document describes the legacy moment-based study. For current interactive and batch PM profiles, see [METHODS_MCMC.md](METHODS_MCMC.md).
+
 # V/σ Analysis of 24 Globular Clusters — Refined Methodology
 
 *Prepared overnight from the team's plan. Every step of the original plan was checked;

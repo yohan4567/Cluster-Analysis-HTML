@@ -7,3 +7,4 @@ requests
 scikit-learn
 astroquery
 openpyxl
+emcee>=3.1,<4

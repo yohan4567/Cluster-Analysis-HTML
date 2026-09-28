@@ -210,7 +210,7 @@ def query_gaia_dr3(cluster, output_folder):
     SELECT
         source_id, ra, dec, ra_error, dec_error,
         parallax, parallax_error,
-        pmra, pmra_error, pmdec, pmdec_error,
+        pmra, pmra_error, pmdec, pmdec_error, pmra_pmdec_corr,
         phot_g_mean_mag, phot_bp_mean_mag, phot_rp_mean_mag,
         bp_rp, ruwe
     FROM gaiadr3.gaia_source
